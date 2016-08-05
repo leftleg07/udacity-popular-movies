@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">udacity-popular-movies</string>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_detail">MovieDetail</string>
+
+    <!--message-->
+    <string name="message_no_network_connection">there is no network connection!</string>
+
+    <!--menu-->
+    <string name="action_settings">Settings</string>
+
+    <!--setting activity prefrence-->
+    <string name="pref_order_label">movie posters sort order</string>
+    <string name="pref_order_key">order</string>
+
+    <string-array name="pref_order_options">
+        <item>@string/pref_order_label_most_popular</item>
+        <item>@string/pref_order_label_top_rated</item>
+    </string-array>
+
+    <string-array name="pref_order_values">
+        <item>@string/pref_order_value_most_popular</item>
+        <item>@string/pref_order_value_top_rated</item>
+    </string-array>
+
+    <string name="pref_order_label_most_popular">by most popular</string>
+    <string name="pref_order_label_top_rated">by top rated</string>
+    <string name="pref_order_value_most_popular">popular</string>
+    <string name="pref_order_value_top_rated">top_rated</string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">com.abby.udacity.popularmovies.app.account</string>
+    <string name="content_authority">com.abby.udacity.popularmovies.app</string>
+
+
 </resources>
