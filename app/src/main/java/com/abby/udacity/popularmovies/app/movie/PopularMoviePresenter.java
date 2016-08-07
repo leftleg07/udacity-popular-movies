@@ -23,7 +23,7 @@ public class PopularMoviePresenter implements PopularMovieContract.Presenter {
     @Inject PopularMovieContract.View mView;
     @Inject Context mContext;
     @Inject TheMovieDBApiService mService;
-    @Inject ContentResolver mContentResolver;
+    ContentResolver mContentResolver;
 
 
     @Inject
@@ -32,7 +32,17 @@ public class PopularMoviePresenter implements PopularMovieContract.Presenter {
     @Inject
     public void setUpPresenter() {
         mView.setPresenter(this);
-        mContext.getContentResolver().registerContentObserver(MovieContract.PopularMovieEntry.CONTENT_URI, false, new ContentObserver(null){
+        mContentResolver = mContext.getContentResolver();
+        mContentResolver.registerContentObserver(MovieContract.PopularMovieEntry.CONTENT_URI, false, new ContentObserver(null){
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                super.onChange(selfChange, uri);
+                Cursor cursor = mContentResolver.query(uri, null, null, null, null);
+                int count = cursor.getCount();
+                mView.updateList(cursor);
+            }
+        });
+        mContentResolver.registerContentObserver(MovieContract.TopRatedMovieEntry.CONTENT_URI, false, new ContentObserver(null){
             @Override
             public void onChange(boolean selfChange, Uri uri) {
                 super.onChange(selfChange, uri);

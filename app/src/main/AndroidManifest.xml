@@ -14,6 +14,8 @@
     <!-- Required because we're manually creating a new account. -->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -46,7 +48,7 @@
         </activity>
         <provider
             android:authorities="com.abby.udacity.popularmovies.app"
-            android:exported="false"
+            android:exported="true"
             android:syncable="true"
             android:name=".data.MovieProvider" />
 

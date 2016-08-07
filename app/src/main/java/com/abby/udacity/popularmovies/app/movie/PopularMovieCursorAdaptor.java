@@ -2,11 +2,11 @@ package com.abby.udacity.popularmovies.app.movie;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SimpleCursorAdapter;
 
 import com.abby.udacity.popularmovies.app.R;
 import com.abby.udacity.popularmovies.app.sync.PopularMovieSyncAdapter;
@@ -18,11 +18,11 @@ import butterknife.ButterKnife;
 /**
  * Created by gsshop on 2016. 8. 5..
  */
-public class PopularMovieCursorAdaptor extends SimpleCursorAdapter {
+public class PopularMovieCursorAdaptor extends CursorAdapter {
     private static final String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/w185";
 
     public PopularMovieCursorAdaptor(Context context) {
-        super(context, 0, null, null, null, 0);
+        super(context, null, 0);
     }
 
     @Override

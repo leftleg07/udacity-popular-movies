@@ -25,7 +25,7 @@ public class MockModule {
 
     @Provides
     @Singleton
-    public PopularMovieContract.View providePopularMovieContractView() {
+    public PopularMovieContract.View providePopularMovieView() {
         return mView;
     }
 

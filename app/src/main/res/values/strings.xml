@@ -23,8 +23,8 @@
         <item>@string/pref_order_value_top_rated</item>
     </string-array>
 
-    <string name="pref_order_label_most_popular">by most popular</string>
-    <string name="pref_order_label_top_rated">by top rated</string>
+    <string name="pref_order_label_most_popular">sort by most popular</string>
+    <string name="pref_order_label_top_rated">sort by top rated</string>
     <string name="pref_order_value_most_popular">popular</string>
     <string name="pref_order_value_top_rated">top_rated</string>
 

@@ -1,14 +1,15 @@
 package com.abby.udacity.popularmovies.app.movie;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.abby.udacity.popularmovies.app.R;
 import com.abby.udacity.popularmovies.app.detail.DetailActivity;
 import com.abby.udacity.popularmovies.app.network.Movie;
+import com.abby.udacity.popularmovies.app.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +34,9 @@ import butterknife.ButterKnife;
  */
 public class PopularMovieFragment extends Fragment implements PopularMovieContract.View {
 
-
     public static final String PARAM_KEY_MOVIE = "_param_key_movie";
+    PopularMovieContract.Presenter mPresenter;
     private ArrayAdapter<Movie> mMovieAdapter;
-    private PopularMovieContract.Presenter mPresenter;
     private PopularMovieCursorAdaptor mMovieCursorAdapter;
 
     @BindView(R.id.gridview_movie)
@@ -52,7 +53,6 @@ public class PopularMovieFragment extends Fragment implements PopularMovieContra
         // use it to populate the ListView it's attached to.
         mMovieAdapter = new PopularMovieAdapter(getActivity(), new ArrayList<Movie>());
         mMovieCursorAdapter = new PopularMovieCursorAdaptor(getActivity());
-//        mPresenter = new PopularMoviePresenter(this, getActivity());
     }
 
     @Override
@@ -85,10 +85,38 @@ public class PopularMovieFragment extends Fragment implements PopularMovieContra
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+//        if (id == R.id.action_refresh) {
+//            updateWeather();
+//            return true;
+//        }
+        if(id == R.id.sort_most_popular) {
+            item.setChecked(true);
+            return true;
+        } else if(id == R.id.sort_top_rated) {
+            item.setChecked(true);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public void onStart() {
         super.onStart();
         updatePopularMovies();
     }
+
 
     @Override
     public void updateList(List<Movie> posters) {
@@ -98,26 +126,23 @@ public class PopularMovieFragment extends Fragment implements PopularMovieContra
     }
 
     @Override
-    public void updateList(Cursor cursor) {
-        mMovieCursorAdapter.swapCursor(cursor);
+    public void updateList(final Cursor cursor) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMovieCursorAdapter.swapCursor(cursor);
+            }
+        });
+
     }
 
     private void updatePopularMovies() {
-        if (!isOnline()) {
+        if (!Util.isOnline(getContext())) {
             Toast.makeText(getContext(), R.string.message_no_network_connection, Toast.LENGTH_SHORT).show();
-            return;
         }
         mPresenter.updatePopularMovie();
     }
 
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
 
     @Override
     public void setPresenter(PopularMovieContract.Presenter presenter) {

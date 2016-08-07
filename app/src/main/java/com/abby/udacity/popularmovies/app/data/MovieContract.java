@@ -25,7 +25,7 @@ public class MovieContract {
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
     public static final String PATH_POPULAR_MOVIE = "popular_movie";
-    public static final String PATH_TOP_RELATED_MOVIE = "top_related_movie";
+    public static final String PATH_TOP_RATED_MOVIE = "top_rated_movie";
     public static final String PATH_FAVORITE_MOVIE = "favorite_movie";
     public static final String PATH_REVIEW = "review";
     public static final String PATH_MOVIE = "movie";
@@ -57,14 +57,14 @@ public class MovieContract {
 
     public static final class TopRatedMovieEntry {
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TOP_RELATED_MOVIE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TOP_RATED_MOVIE).build();
 
         public static final String TABLE_NAME = "top_rated";
 
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RELATED_MOVIE;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RATED_MOVIE;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RELATED_MOVIE;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RATED_MOVIE;
 
         public static Uri buildTopRelatedMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

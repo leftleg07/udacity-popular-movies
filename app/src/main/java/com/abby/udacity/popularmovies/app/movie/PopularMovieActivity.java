@@ -1,16 +1,20 @@
 package com.abby.udacity.popularmovies.app.movie;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.abby.udacity.popularmovies.app.MainApplication;
 import com.abby.udacity.popularmovies.app.R;
-import com.abby.udacity.popularmovies.app.setting.SettingsActivity;
+import com.abby.udacity.popularmovies.app.di.PopularMovieComponent;
+import com.abby.udacity.popularmovies.app.di.PopularMovieModule;
+
+import javax.inject.Inject;
 
 public class PopularMovieActivity extends AppCompatActivity {
 
+    @Inject PopularMoviePresenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,28 +26,20 @@ public class PopularMovieActivity extends AppCompatActivity {
                     .replace(android.R.id.content, new PopularMovieFragment())
                     .commit();
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+        PopularMovieFragment fragment =
+                (PopularMovieFragment) getSupportFragmentManager().findFragmentById(R.id.content);
+        if (fragment == null) {
+            // Create the fragment
+            fragment = new PopularMovieFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, fragment)
+                    .commit();
+            PopularMovieComponent component = ((MainApplication) getApplication()).getComponent().plus(new PopularMovieModule(fragment));
+            component.inject(this);
         }
 
-        return super.onOptionsItemSelected(item);
     }
+
+
 }

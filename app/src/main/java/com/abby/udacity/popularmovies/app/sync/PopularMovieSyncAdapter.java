@@ -25,6 +25,7 @@ import com.abby.udacity.popularmovies.app.R;
 import com.abby.udacity.popularmovies.app.data.MovieContract;
 import com.abby.udacity.popularmovies.app.network.Movie;
 import com.abby.udacity.popularmovies.app.network.TheMovieDBApiService;
+import com.abby.udacity.popularmovies.app.util.Util;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -88,7 +89,6 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Content resolver, for performing database operations.
      */
-    @Inject
     ContentResolver mContentResolver;
 
     @Inject
@@ -97,6 +97,9 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
     @Inject
     SharedPreferences mPrefs;
 
+    @Inject
+    Context applicationContext;
+
 
     /**
      * Constructor. Obtains handle to content resolver for later use.
@@ -104,6 +107,7 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public PopularMovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         ((MainApplication) context).getComponent().inject(this);
+        mContentResolver = context.getContentResolver();
     }
 
     /**
@@ -120,6 +124,27 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "Beginning network synchronization");
 
         String order = mPrefs.getString(getContext().getString(R.string.pref_order_key), DEFAULT_ORDER_MOST_POPULAR);
+        int mode = -1;
+        if (order.equals(DEFAULT_ORDER_MOST_POPULAR)) {
+            mode = ORDER_MODE_MOST_POPULAR;
+        } else {
+            mode = ORDER_MODE_TOP_RATED;
+        }
+        Uri contentUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.CONTENT_URI : MovieContract.TopRatedMovieEntry.CONTENT_URI);
+        Cursor cursor = mContentResolver.query(contentUri, PROJECTION, null, null, null);
+        Preconditions.checkNotNull(cursor);
+        if(cursor.getCount() > 0) {
+            mContentResolver.notifyChange(
+                    contentUri, // URI where data was modified
+                    null,                           // No local observer
+                    false);                         // IMPORTANT: Do not sync to network
+            // This sample doesn't support uploads, but if *your* code does, make sure you set
+        }
+
+        if(!Util.isOnline(getContext())) {
+            return;
+        }
+
         String jsonStr = mService.getPopularMovie(order).toBlocking().single();
         try {
             if (order.equals(DEFAULT_ORDER_MOST_POPULAR)) {

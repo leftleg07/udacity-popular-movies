@@ -52,6 +52,21 @@ public class PopularMoviePresenterTest {
         String key = context.getString(R.string.pref_order_key);
         mPrefs.edit().putString(key, value).commit();
 
+        mPresenter.updatePopularMovie();
+
+        while(true) {
+            TimeUnit.MILLISECONDS.sleep(400);
+        }
+//        verify(mView).updateList(anyList());
+    }
+
+    @Test
+    public void testTopRatedMovies() throws InterruptedException {
+        // fail("implements!");
+
+        String value = context.getString(R.string.pref_order_value_top_rated);
+        String key = context.getString(R.string.pref_order_key);
+        mPrefs.edit().putString(key, value).commit();
 
         mPresenter.updatePopularMovie();
 
@@ -60,6 +75,7 @@ public class PopularMoviePresenterTest {
         }
 //        verify(mView).updateList(anyList());
     }
+
 
     /*
     @Test

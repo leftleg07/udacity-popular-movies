@@ -1,6 +1,5 @@
 package com.abby.udacity.popularmovies.app.di;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -83,12 +82,6 @@ public class ApplicationModule {
 
         return httpClient.build();
 
-    }
-
-    @Provides
-    @Singleton
-    public ContentResolver provideContentResolver() {
-        return applicationContext.getContentResolver();
     }
 
     @Provides
