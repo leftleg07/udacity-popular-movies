@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.abby.udacity.popularmovies.app.data.db.MovieContract;
+import com.abby.udacity.popularmovies.app.data.db.MovieDbHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +44,7 @@ public class TestDb {
         tableNameHashSet.add(MovieContract.TopRatedMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.FavoriteMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.ReviewEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContract.VideoEntry.TABLE_NAME);
 
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
@@ -59,7 +63,7 @@ public class TestDb {
 
         // if this fails, it means that your database doesn't contain both the location entry
         // and weather entry tables
-        assertTrue("Error: Your database was created without the popular movie and the top related movie and the favorite movie and review tables",
+        assertTrue("Error: Your database was created without the popular movie and the top related movie and the favorite movie and review and trailer tables",
                 tableNameHashSet.isEmpty());
 
 
@@ -192,6 +196,39 @@ public class TestDb {
         assertTrue("Error: The database doesn't contain all of the required review entry columns",
                 entryColumnHashSet.isEmpty());
 
+        /**
+         * video table
+         */
+        entryColumnHashSet.clear();
+        c.close();
+        // now, do our tables contain the correct columns?
+        c = db.rawQuery("PRAGMA table_info(" + MovieContract.VideoEntry.TABLE_NAME + ")",
+                null);
+
+        assertTrue("Error: This means that we were unable to query the database for table information.",
+                c.moveToFirst());
+
+        // Build a HashSet of all of the column names we want to look for
+
+        entryColumnHashSet.add(MovieContract.VideoEntry._ID);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_VIDEO_ID);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_MOVIE_ID);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_KEY);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_NAME);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_SIZE);
+        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_TYPE);
+
+        columnNameIndex = c.getColumnIndex("name");
+        do {
+            String columnName = c.getString(columnNameIndex);
+            entryColumnHashSet.remove(columnName);
+        } while (c.moveToNext());
+
+        // if this fails, it means that your database doesn't contain all of the required location
+        // entry columns
+        assertTrue("Error: The database doesn't contain all of the required review entry columns",
+                entryColumnHashSet.isEmpty());
+
         c.close();
         db.close();
 
@@ -205,7 +242,6 @@ public class TestDb {
     @Test
     public void testPopularMovieTable() throws Exception {
 
-        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
@@ -243,7 +279,6 @@ public class TestDb {
     @Test
     public void testTopRelatedMovieTable() throws Exception {
 
-        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
@@ -279,7 +314,6 @@ public class TestDb {
     @Test
     public void testFavoriteMovieTable() throws Exception {
 
-        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
@@ -314,7 +348,6 @@ public class TestDb {
      */
     @Test
     public void testReviewTable() throws Exception {
-        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
@@ -340,6 +373,42 @@ public class TestDb {
 
         cursor.close();
         db.close();
+
+    }
+
+
+    /**
+     * video table
+     * @throws Exception
+     */
+    @Test
+    public void testVideoTable() throws Exception {
+        SQLiteDatabase db = new MovieDbHelper(
+                this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        ContentValues testValues = TestUtility.createVideoEntryValues();
+
+        // insert data
+        TestUtility.insertVideoEntryValues(mContext);
+
+        Cursor cursor = db.query(
+                MovieContract.VideoEntry.TABLE_NAME,  // Table to Query
+                null, // all columns
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null // sort order
+        );
+
+        assertTrue( "Error: No Records returned from video query", cursor.moveToFirst() );
+
+        TestUtility.validateCurrentRecord("Error: video Query Validation Failed", cursor, testValues);
+
+        cursor.close();
+        db.close();
+
 
     }
 }

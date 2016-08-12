@@ -1,7 +1,9 @@
 package com.abby.udacity.popularmovies.app.di;
 
 
-import com.abby.udacity.popularmovies.app.movie.PopularMoviePresenterTest;
+import com.abby.udacity.popularmovies.app.network.TestAPIService;
+import com.abby.udacity.popularmovies.app.ui.detail.DetailPresenterTest;
+import com.abby.udacity.popularmovies.app.ui.popular.PopularPresenterTest;
 
 import javax.inject.Singleton;
 
@@ -13,5 +15,8 @@ import dagger.Subcomponent;
 @Singleton
 @Subcomponent(modules = MockModule.class)
 public interface MockComponent {
-    void inject(PopularMoviePresenterTest popularMoviePresenterTest);
+    void inject(PopularPresenterTest popularMoviePresenterTest);
+    void inject(DetailPresenterTest detailPresenterTest);
+    void inject(TestAPIService testService);
+
 }

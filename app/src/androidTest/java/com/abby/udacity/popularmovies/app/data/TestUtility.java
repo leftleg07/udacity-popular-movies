@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.abby.udacity.popularmovies.app.data.db.MovieContract;
+import com.abby.udacity.popularmovies.app.data.db.MovieDbHelper;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -74,6 +77,18 @@ public class TestUtility {
         return entryValues;
     }
 
+    static ContentValues createVideoEntryValues() {
+        ContentValues entryValues = new ContentValues();
+        entryValues.put(MovieContract.VideoEntry.COLUMN_VIDEO_ID , "571c8dc4c3a36842aa000190");
+        entryValues.put(MovieContract.VideoEntry.COLUMN_MOVIE_ID, 209112);
+        entryValues.put(MovieContract.VideoEntry.COLUMN_KEY, "6as8ahAr1Uc");
+        entryValues.put(MovieContract.VideoEntry.COLUMN_NAME, "Exclusive Sneak");
+        entryValues.put(MovieContract.VideoEntry.COLUMN_SIZE, 1080);
+        entryValues.put(MovieContract.VideoEntry.COLUMN_TYPE, "Teaser");
+
+        return entryValues;
+    }
+
     static long insertReviewEntryValues(Context context) {
         SQLiteDatabase db = new MovieDbHelper(context).getWritableDatabase();
         ContentValues testValues = TestUtility.createReviewEntryValues();
@@ -88,5 +103,18 @@ public class TestUtility {
         return entryRowId;
     }
 
+    static long insertVideoEntryValues(Context context) {
+        SQLiteDatabase db = new MovieDbHelper(context).getWritableDatabase();
+        ContentValues testValues = TestUtility.createVideoEntryValues();
+
+        long entryRowId;
+        entryRowId = db.insert(MovieContract.VideoEntry.TABLE_NAME, null, testValues);
+
+        // Verify we got a row back.
+        assertTrue("Error: Failure to insert Video Entry Values", entryRowId != -1);
+
+        db.close();
+        return entryRowId;
+    }
 
 }

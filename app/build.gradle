@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner 'com.abby.udacity.popularmovies.app.MockTestRunner'
+
     }
     buildTypes {
         debug {
@@ -49,6 +50,9 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.+'
     compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support.constraint:constraint-layout:1.+'
+    compile 'com.android.support:cardview-v7:23.+'
+    compile 'com.android.support:gridlayout-v7:23.+'
 
     // picasso dependencies
     compile 'com.squareup.picasso:picasso:2.+'
@@ -97,4 +101,6 @@ dependencies {
 
     androidTestCompile 'com.google.truth:truth:0.28'
     androidTestApt 'com.google.dagger:dagger-compiler:2.+'
+
+
 }

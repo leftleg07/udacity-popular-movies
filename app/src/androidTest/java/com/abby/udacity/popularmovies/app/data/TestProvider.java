@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.abby.udacity.popularmovies.app.data.db.MovieContract;
+import com.abby.udacity.popularmovies.app.data.db.MovieProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +58,12 @@ public class TestProvider {
                 null
         );
 
+        mContentResolver.delete(
+                MovieContract.VideoEntry.CONTENT_URI,
+                null,
+                null
+        );
+
 
         Cursor cursor = mContentResolver.query(
                 MovieContract.PopularMovieEntry.CONTENT_URI,
@@ -94,6 +103,16 @@ public class TestProvider {
                 null
         );
         assertEquals("Error: Records not deleted from review table during delete", 0, cursor.getCount());
+        cursor.close();
+
+        cursor = mContentResolver.query(
+                MovieContract.VideoEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        assertEquals("Error: Records not deleted from video table during delete", 0, cursor.getCount());
         cursor.close();
 
     }
@@ -287,6 +306,42 @@ public class TestProvider {
         cursor.close();
 
         uri = MovieContract.ReviewEntry.buildReviewMovieUri(MOVIE_ID);
+        count = mContentResolver.delete(uri, null, null);
+        assertEquals(1, count);
+
+    }
+
+    @Test
+    public void testBasicVideoQuery() throws Exception {
+
+        // insert
+        ContentValues testValues = TestUtility.createVideoEntryValues();
+        Uri uri = mContentResolver.insert(MovieContract.VideoEntry.CONTENT_URI, testValues);
+
+        String videoId = uri.getLastPathSegment();
+        assertEquals("Error: Review Query Validation Failed", testValues.getAsString(MovieContract.VideoEntry.COLUMN_VIDEO_ID), videoId);
+
+        // update
+
+        ContentValues updateValues = new ContentValues(testValues);
+        updateValues.put(MovieContract.VideoEntry.COLUMN_NAME, "Frank Ochieng");
+        int count = mContentResolver.update(uri, updateValues, null, null);
+        assertEquals(1, count);
+
+        Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
+
+        assertTrue("Error: No Records returned from Video query", cursor.moveToFirst());
+        TestUtility.validateCurrentRecord("Error: Video Query Validation Failed", cursor, updateValues);
+        cursor.close();
+
+        uri = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
+        cursor = mContentResolver.query(uri, null, null, null, null, null);
+
+        assertTrue("Error: No Records returned from Review query", cursor.moveToFirst());
+        TestUtility.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
+        cursor.close();
+
+        uri = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
         count = mContentResolver.delete(uri, null, null);
         assertEquals(1, count);
 

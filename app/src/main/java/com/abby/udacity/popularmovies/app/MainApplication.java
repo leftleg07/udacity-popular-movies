@@ -2,9 +2,9 @@ package com.abby.udacity.popularmovies.app;
 
 import android.app.Application;
 
-import com.abby.udacity.popularmovies.app.di.ApplicationComponent;
-import com.abby.udacity.popularmovies.app.di.ApplicationModule;
-import com.abby.udacity.popularmovies.app.di.DaggerApplicationComponent;
+import com.abby.udacity.popularmovies.app.di.component.ApplicationComponent;
+import com.abby.udacity.popularmovies.app.di.component.DaggerApplicationComponent;
+import com.abby.udacity.popularmovies.app.di.module.ApplicationModule;
 import com.facebook.stetho.Stetho;
 
 /**

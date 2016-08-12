@@ -1,8 +1,8 @@
 package com.abby.udacity.popularmovies.app;
 
-import com.abby.udacity.popularmovies.app.di.ApplicationModule;
 import com.abby.udacity.popularmovies.app.di.DaggerMockApplicationComponent;
 import com.abby.udacity.popularmovies.app.di.MockApplicationComponent;
+import com.abby.udacity.popularmovies.app.di.module.ApplicationModule;
 
 /**
  * Mock Application

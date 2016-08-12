@@ -1,5 +1,7 @@
 package com.abby.udacity.popularmovies.app.di;
 
+import com.abby.udacity.popularmovies.app.di.module.ApplicationModule;
+
 import javax.inject.Singleton;
 
 import dagger.Component;

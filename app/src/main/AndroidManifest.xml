@@ -23,7 +23,7 @@
         android:name=".MainApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".movie.PopularMovieActivity">
+        <activity android:name=".ui.popular.PopularActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,29 +31,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".setting.SettingsActivity"
+            android:name=".ui.setting.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".movie.PopularMovieActivity">
+            android:parentActivityName=".ui.popular.PopularActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".movie.PopularMovieActivity" />
+                android:value=".ui.popular.PopularActivity" />
         </activity>
         <activity
-            android:name=".detail.DetailActivity"
-            android:label="@string/title_activity_detail"
-            android:parentActivityName=".movie.PopularMovieActivity">
+            android:name=".ui.favorite.FavoriteActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.popular.PopularActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".movie.PopularMovieActivity" />
+                android:value=".ui.popular.PopularActivity" />
+        </activity>
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".ui.popular.PopularActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.popular.PopularActivity" />
         </activity>
         <provider
             android:authorities="com.abby.udacity.popularmovies.app"
             android:exported="true"
             android:syncable="true"
-            android:name=".data.MovieProvider" />
+            android:name=".data.db.MovieProvider" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.PopularMovieAuthenticatorService">
+        <service android:name=".data.sync.PopularAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -64,7 +72,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.PopularMovieSyncService"
+            android:name=".data.sync.PopularSyncService"
             android:exported="true"
             >
             <intent-filter>

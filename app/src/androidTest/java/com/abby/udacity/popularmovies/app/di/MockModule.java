@@ -1,7 +1,8 @@
 package com.abby.udacity.popularmovies.app.di;
 
 
-import com.abby.udacity.popularmovies.app.movie.PopularMovieContract;
+import com.abby.udacity.popularmovies.app.ui.detail.DetailContract;
+import com.abby.udacity.popularmovies.app.ui.popular.PopularContract;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,7 +18,10 @@ import dagger.Provides;
 @Module
 public class MockModule {
     @Mock
-    private PopularMovieContract.View mView;
+    private PopularContract.View mPopularView;
+
+    @Mock
+    private DetailContract.View mDetailView;
 
     public MockModule() {
         MockitoAnnotations.initMocks(this);
@@ -25,8 +29,14 @@ public class MockModule {
 
     @Provides
     @Singleton
-    public PopularMovieContract.View providePopularMovieView() {
-        return mView;
+    public PopularContract.View providePopularView() {
+        return mPopularView;
+    }
+
+    @Provides
+    @Singleton
+    public DetailContract.View provideDetailView() {
+        return mDetailView;
     }
 
 }
