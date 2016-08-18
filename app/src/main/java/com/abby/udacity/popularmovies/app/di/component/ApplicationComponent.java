@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * Created by gsshop on 2016. 8. 2..
+ *  dagger's application component
  */
 @Singleton
 @Component(modules = ApplicationModule.class)

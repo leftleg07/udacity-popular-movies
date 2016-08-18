@@ -3,11 +3,11 @@ package com.abby.udacity.popularmovies.app.data.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by gsshop on 2016. 8. 9..
+ * Immutable model class for a trailer.
  */
-public class Video {
+public class Trailer {
     @SerializedName("id")
-    public String mVideoId;
+    public String mTrailerId;
 
     @SerializedName("key")
     public String mKey;

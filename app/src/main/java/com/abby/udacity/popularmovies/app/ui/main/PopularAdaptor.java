@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.abby.udacity.popularmovies.app.R;
@@ -16,7 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by gsshop on 2016. 8. 5..
+ * {@link PopularAdaptor} exposes a list of popular movies
+ * from a {@link Cursor} to a {@link GridView}.
  */
 public class PopularAdaptor extends CursorAdapter {
     private static final String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/w185";
@@ -50,7 +52,7 @@ public class PopularAdaptor extends CursorAdapter {
     }
 
     static class ViewHolder {
-        @BindView(R.id.imageView_thumbnail)
+        @BindView(R.id.imageView_item_movie_thumbnail)
         ImageView mThumbnailView;
 
         ViewHolder(View view) {

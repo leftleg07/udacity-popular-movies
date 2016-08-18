@@ -52,7 +52,7 @@ public class TestAPIService {
     @Test
     public void testVideo() throws Exception {
         int movieId = 209112;
-        String video = mApiService.getVideo(movieId).toBlocking().single();
+        String video = mApiService.getTrailer(movieId).toBlocking().single();
         assertTrue(video != null && video.length() > 0);
 
     }

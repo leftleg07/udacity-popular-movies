@@ -6,7 +6,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 /**
- * Created by gsshop on 2016. 7. 11..
+ * The Movie DB API
  */
 public interface TheMovieDBApiService {
     String POPULAR_MOVE_BASE_URL = "http://api.themoviedb.org";
@@ -15,7 +15,7 @@ public interface TheMovieDBApiService {
     Observable<String> getPopularMovie(@Path("order") String order);
 
     @GET("3/movie/{id}/videos")
-    Observable<String> getVideo(@Path("id") long movieId);
+    Observable<String> getTrailer(@Path("id") long movieId);
 
     @GET("3/movie/{id}/reviews")
     Observable<String> getReview(@Path("id") long movieId);

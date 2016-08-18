@@ -8,12 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 /**
- * Manages "Authentication" to Sunshine's backend service.  The SyncAdapter framework
- * requires an authenticator object, so syncing to a service that doesn't need authentication
- * typically means creating a stub authenticator like this one.
- * This code is copied directly, in its entirety, from
- * http://developer.android.com/training/sync-adapters/creating-authenticator.html
- * Which is a pretty handy reference when creating your own syncadapters.  Just sayin'.
+ * Manages "Authentication" to Popular Movies's backend service.
  */
 public class PopularAuthenticator extends AbstractAccountAuthenticator {
 

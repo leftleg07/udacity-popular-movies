@@ -29,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
         // Display the fragment as the main content.
 
         DetailFragment fragment =
-                (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.content);
+                (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (fragment == null) {
                 // Create the detail fragment and add it to the activity
                 // using a fragment transaction.

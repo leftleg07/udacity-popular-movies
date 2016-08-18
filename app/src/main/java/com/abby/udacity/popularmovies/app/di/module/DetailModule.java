@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by gsshop on 2016. 8. 8..
+ * A module to wrap the Detail state and expose it to the graph.
  */
 @Module
 public class DetailModule {
@@ -18,5 +18,9 @@ public class DetailModule {
         this.mView = view;
     }
 
-    @Provides @Singleton DetailContract.View provideView() {return  mView;}
+    @Provides
+    @Singleton
+    DetailContract.View provideView() {
+        return mView;
+    }
 }

@@ -16,9 +16,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by gsshop on 2016. 7. 28..
+ * util
  */
-public class TestUtility {
+public class TestUtil {
     /**
      * delete database
      * @param context
@@ -54,7 +54,7 @@ public class TestUtility {
 
     static long insertMoveEntryValues(Context context, String table) {
         SQLiteDatabase db = new MovieDbHelper(context).getWritableDatabase();
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
 
         long entryRowId;
         entryRowId = db.insert(table, null, testValues);
@@ -79,19 +79,19 @@ public class TestUtility {
 
     static ContentValues createVideoEntryValues() {
         ContentValues entryValues = new ContentValues();
-        entryValues.put(MovieContract.VideoEntry.COLUMN_VIDEO_ID , "571c8dc4c3a36842aa000190");
-        entryValues.put(MovieContract.VideoEntry.COLUMN_MOVIE_ID, 209112);
-        entryValues.put(MovieContract.VideoEntry.COLUMN_KEY, "6as8ahAr1Uc");
-        entryValues.put(MovieContract.VideoEntry.COLUMN_NAME, "Exclusive Sneak");
-        entryValues.put(MovieContract.VideoEntry.COLUMN_SIZE, 1080);
-        entryValues.put(MovieContract.VideoEntry.COLUMN_TYPE, "Teaser");
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, "571c8dc4c3a36842aa000190");
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_MOVIE_ID, 209112);
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_KEY, "6as8ahAr1Uc");
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_NAME, "Exclusive Sneak");
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_SIZE, 1080);
+        entryValues.put(MovieContract.TrailerEntry.COLUMN_TYPE, "Teaser");
 
         return entryValues;
     }
 
     static long insertReviewEntryValues(Context context) {
         SQLiteDatabase db = new MovieDbHelper(context).getWritableDatabase();
-        ContentValues testValues = TestUtility.createReviewEntryValues();
+        ContentValues testValues = TestUtil.createReviewEntryValues();
 
         long entryRowId;
         entryRowId = db.insert(MovieContract.ReviewEntry.TABLE_NAME, null, testValues);
@@ -105,13 +105,13 @@ public class TestUtility {
 
     static long insertVideoEntryValues(Context context) {
         SQLiteDatabase db = new MovieDbHelper(context).getWritableDatabase();
-        ContentValues testValues = TestUtility.createVideoEntryValues();
+        ContentValues testValues = TestUtil.createVideoEntryValues();
 
         long entryRowId;
-        entryRowId = db.insert(MovieContract.VideoEntry.TABLE_NAME, null, testValues);
+        entryRowId = db.insert(MovieContract.TrailerEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
-        assertTrue("Error: Failure to insert Video Entry Values", entryRowId != -1);
+        assertTrue("Error: Failure to insert Trailer Entry Values", entryRowId != -1);
 
         db.close();
         return entryRowId;

@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Created by heim on 7/30/16.
+ * Tests for provider
  */
 @RunWith(AndroidJUnit4.class)
 public class TestProvider {
@@ -59,7 +59,7 @@ public class TestProvider {
         );
 
         mContentResolver.delete(
-                MovieContract.VideoEntry.CONTENT_URI,
+                MovieContract.TrailerEntry.CONTENT_URI,
                 null,
                 null
         );
@@ -106,7 +106,7 @@ public class TestProvider {
         cursor.close();
 
         cursor = mContentResolver.query(
-                MovieContract.VideoEntry.CONTENT_URI,
+                MovieContract.TrailerEntry.CONTENT_URI,
                 null,
                 null,
                 null,
@@ -194,7 +194,7 @@ public class TestProvider {
     public void testBasicPopularMovieQuery() throws Exception {
         // insert
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
         ContentValues updateValues = new ContentValues(testValues);
         updateValues.put(MovieContract.MovieColumns.COLUMN_VOTE_AVERAGE, 1.2f);
 
@@ -212,7 +212,7 @@ public class TestProvider {
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from popular movie query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Popular Movie Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Popular Movie Query Validation Failed", cursor, updateValues);
         cursor.close();
 
     }
@@ -222,7 +222,7 @@ public class TestProvider {
     public void testBasicTopRelatedMovieQuery() throws Exception {
         // insert
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
         ContentValues updateValues = new ContentValues(testValues);
         updateValues.put(MovieContract.MovieColumns.COLUMN_VOTE_AVERAGE, 1.2f);
 
@@ -240,7 +240,7 @@ public class TestProvider {
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from top related movie query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Top related Movie Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Top related Movie Query Validation Failed", cursor, updateValues);
         cursor.close();
 
     }
@@ -251,7 +251,7 @@ public class TestProvider {
 
         // insert
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
         ContentValues updateValues = new ContentValues(testValues);
         updateValues.put(MovieContract.MovieColumns.COLUMN_VOTE_AVERAGE, 1.2f);
 
@@ -269,7 +269,7 @@ public class TestProvider {
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from favorite movie query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Favorite Movie Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Favorite Movie Query Validation Failed", cursor, updateValues);
         cursor.close();
 
     }
@@ -279,7 +279,7 @@ public class TestProvider {
     public void testBasicReviewQuery() throws Exception {
 
         // insert
-        ContentValues testValues = TestUtility.createReviewEntryValues();
+        ContentValues testValues = TestUtil.createReviewEntryValues();
         Uri uri = mContentResolver.insert(MovieContract.ReviewEntry.CONTENT_URI, testValues);
 
         String reviewId = uri.getLastPathSegment();
@@ -295,14 +295,14 @@ public class TestProvider {
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from Review query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
         cursor.close();
 
         uri = MovieContract.ReviewEntry.buildReviewMovieUri(MOVIE_ID);
         cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from Review query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
         cursor.close();
 
         uri = MovieContract.ReviewEntry.buildReviewMovieUri(MOVIE_ID);
@@ -315,33 +315,33 @@ public class TestProvider {
     public void testBasicVideoQuery() throws Exception {
 
         // insert
-        ContentValues testValues = TestUtility.createVideoEntryValues();
-        Uri uri = mContentResolver.insert(MovieContract.VideoEntry.CONTENT_URI, testValues);
+        ContentValues testValues = TestUtil.createVideoEntryValues();
+        Uri uri = mContentResolver.insert(MovieContract.TrailerEntry.CONTENT_URI, testValues);
 
         String videoId = uri.getLastPathSegment();
-        assertEquals("Error: Review Query Validation Failed", testValues.getAsString(MovieContract.VideoEntry.COLUMN_VIDEO_ID), videoId);
+        assertEquals("Error: Review Query Validation Failed", testValues.getAsString(MovieContract.TrailerEntry.COLUMN_TRAILER_ID), videoId);
 
         // update
 
         ContentValues updateValues = new ContentValues(testValues);
-        updateValues.put(MovieContract.VideoEntry.COLUMN_NAME, "Frank Ochieng");
+        updateValues.put(MovieContract.TrailerEntry.COLUMN_NAME, "Frank Ochieng");
         int count = mContentResolver.update(uri, updateValues, null, null);
         assertEquals(1, count);
 
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
-        assertTrue("Error: No Records returned from Video query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Video Query Validation Failed", cursor, updateValues);
+        assertTrue("Error: No Records returned from Trailer query", cursor.moveToFirst());
+        TestUtil.validateCurrentRecord("Error: Trailer Query Validation Failed", cursor, updateValues);
         cursor.close();
 
-        uri = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
+        uri = MovieContract.TrailerEntry.buildVideoMovieUri(MOVIE_ID);
         cursor = mContentResolver.query(uri, null, null, null, null, null);
 
         assertTrue("Error: No Records returned from Review query", cursor.moveToFirst());
-        TestUtility.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
+        TestUtil.validateCurrentRecord("Error: Review Query Validation Failed", cursor, updateValues);
         cursor.close();
 
-        uri = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
+        uri = MovieContract.TrailerEntry.buildVideoMovieUri(MOVIE_ID);
         count = mContentResolver.delete(uri, null, null);
         assertEquals(1, count);
 

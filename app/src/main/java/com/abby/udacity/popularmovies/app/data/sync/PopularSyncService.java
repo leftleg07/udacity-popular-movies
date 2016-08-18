@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * Service that handles sync.
+ */
+
 public class PopularSyncService extends Service {
     private static final Object sSyncAdapterLock = new Object();
     private static PopularSyncAdapter sSyncAdapter = null;

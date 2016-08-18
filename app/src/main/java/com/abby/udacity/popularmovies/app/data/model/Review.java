@@ -3,7 +3,7 @@ package com.abby.udacity.popularmovies.app.data.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by gsshop on 2016. 8. 9..
+ * Immutable model class for a review.
  */
 public class Review {
 

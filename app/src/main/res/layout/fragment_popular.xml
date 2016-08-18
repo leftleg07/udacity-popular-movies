@@ -6,7 +6,7 @@
     tools:context=".ui.main.PopularFragment">
 
     <GridView
-        android:id="@+id/listView_movie"
+        android:id="@+id/listView_popular_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="150dp"
@@ -16,7 +16,7 @@
         android:verticalSpacing="0dp" />
 
     <TextView
-        android:id="@+id/textView_empty"
+        android:id="@+id/textView_popular_empty"
         android:gravity="center"
         android:background="@android:color/white"
         android:layout_width="match_parent"

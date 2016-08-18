@@ -40,7 +40,7 @@ public class TrailerDilaogFragment extends DialogFragment implements LoaderManag
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM_MOVIE_ID = "_param_movie_id";
 
-    // Format of the youtube link to a Video Library video
+    // Format of the youtube link to a Trailer Library video
     public static final String YOUTUBE_URL_FMT = "https://www.youtube.com/watch?v=%s";
 
 
@@ -100,7 +100,7 @@ public class TrailerDilaogFragment extends DialogFragment implements LoaderManag
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                String key = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_KEY);
+                String key = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_KEY);
                 String youtubeLink = String.format(Locale.US, YOUTUBE_URL_FMT, key);
                 // Start playing the video on Youtube.
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink)));
@@ -116,7 +116,7 @@ public class TrailerDilaogFragment extends DialogFragment implements LoaderManag
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri uri = MovieContract.VideoEntry.buildVideoMovieUri(mParamMovieId);
+        Uri uri = MovieContract.TrailerEntry.buildVideoMovieUri(mParamMovieId);
         return new CursorLoader(getActivity(), uri, null, null, null, null);
     }
 
@@ -153,8 +153,8 @@ public class TrailerDilaogFragment extends DialogFragment implements LoaderManag
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
 
-            String key = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_KEY);
-            String name = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_NAME);
+            String key = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_KEY);
+            String name = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_NAME);
 
             String thumbUrl = String.format(Locale.US, YOUTUBE_THUMB_URL_FMT, key);
 
@@ -171,9 +171,9 @@ public class TrailerDilaogFragment extends DialogFragment implements LoaderManag
     }
 
     static class ViewHolder {
-        @BindView(R.id.imageView_thumbnail)
+        @BindView(R.id.imageView_item_trailer_thumbnail)
         ImageView mThumbnailImage;
-        @BindView(R.id.textView_name)
+        @BindView(R.id.textView_item_trailer_name)
         TextView mNameText;
 
         public ViewHolder(View view) {

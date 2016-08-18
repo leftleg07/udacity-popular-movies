@@ -26,6 +26,9 @@ import static com.abby.udacity.popularmovies.app.ui.main.PopularFragment.FAVORIT
 import static com.abby.udacity.popularmovies.app.ui.main.PopularFragment.HIGHEST_RATED_LOADER;
 import static com.abby.udacity.popularmovies.app.ui.main.PopularFragment.MOST_POPULAR_LOADER;
 
+/**
+ * popular movies activity
+ */
 public class MainActivity extends AppCompatActivity implements PopularFragment.Callback {
 
     private static final String DETAIL_FRAGMENT_TAG = DetailFragment.class.getSimpleName();
@@ -118,11 +121,9 @@ public class MainActivity extends AppCompatActivity implements PopularFragment.C
         PopularFragment fragment =
                 (PopularFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_popular);
         if (fragment != null) {
+            fragment.getLoaderManager().restartLoader(id, null, fragment);
             if (mTwoPane) {
-                fragment.getLoaderManager().restartLoader(id, null, fragment);
                 ((ViewGroup)findViewById(R.id.detail_container)).removeAllViews();
-            } else {
-                fragment.getLoaderManager().initLoader(id, null, fragment);
             }
         }
     }

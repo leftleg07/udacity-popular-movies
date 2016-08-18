@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 /**
- * Created by heim on 7/30/16.
+ * {@link ContentProvider} that stores {@link MovieContract} data.
  */
 public class MovieProvider extends ContentProvider {
     public static final int POPULAR_MOVIE = 100;
@@ -138,11 +138,11 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             case VIDEO_WITH_VIDEO_ID:
-                selection = MovieContract.VideoEntry.COLUMN_VIDEO_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_TRAILER_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case VIDEO:
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MovieContract.VideoEntry.TABLE_NAME,
+                        MovieContract.TrailerEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -152,11 +152,11 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             case VIDEO_WITH_MOVIE_ID:
-                selection = MovieContract.VideoEntry.COLUMN_MOVIE_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_MOVIE_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
-                sortOrder = MovieContract.VideoEntry.COLUMN_VIDEO_ID + " ASC";
+                sortOrder = MovieContract.TrailerEntry.COLUMN_TRAILER_ID + " ASC";
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MovieContract.VideoEntry.TABLE_NAME,
+                        MovieContract.TrailerEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -249,10 +249,10 @@ public class MovieProvider extends ContentProvider {
             case VIDEO:
             case VIDEO_WITH_VIDEO_ID:
             case VIDEO_WITH_MOVIE_ID: {
-                long _id = db.insert(MovieContract.VideoEntry.TABLE_NAME, null, values);
+                long _id = db.insert(MovieContract.TrailerEntry.TABLE_NAME, null, values);
                 if (_id > 0) {
-                    String reviewId = values.getAsString(MovieContract.VideoEntry.COLUMN_VIDEO_ID);
-                    returnUri = MovieContract.VideoEntry.buildVideoUri(reviewId);
+                    String reviewId = values.getAsString(MovieContract.TrailerEntry.COLUMN_TRAILER_ID);
+                    returnUri = MovieContract.TrailerEntry.buildTrailerUri(reviewId);
                 } else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -307,17 +307,17 @@ public class MovieProvider extends ContentProvider {
                         MovieContract.ReviewEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case VIDEO_WITH_VIDEO_ID:
-                selection = MovieContract.VideoEntry.COLUMN_VIDEO_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_TRAILER_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case VIDEO:
                 rowsDeleted = db.delete(
-                        MovieContract.VideoEntry.TABLE_NAME, selection, selectionArgs);
+                        MovieContract.TrailerEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case VIDEO_WITH_MOVIE_ID:
-                selection = MovieContract.VideoEntry.COLUMN_MOVIE_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_MOVIE_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
                 rowsDeleted = db.delete(
-                        MovieContract.VideoEntry.TABLE_NAME, selection, selectionArgs);
+                        MovieContract.TrailerEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -371,16 +371,16 @@ public class MovieProvider extends ContentProvider {
                         selectionArgs);
                 break;
             case VIDEO_WITH_VIDEO_ID:
-                selection = MovieContract.VideoEntry.COLUMN_VIDEO_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_TRAILER_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case VIDEO:
-                rowsUpdated = db.update(MovieContract.VideoEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(MovieContract.TrailerEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case VIDEO_WITH_MOVIE_ID:
-                selection = MovieContract.VideoEntry.COLUMN_MOVIE_ID + " =? ";
+                selection = MovieContract.TrailerEntry.COLUMN_MOVIE_ID + " =? ";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
-                rowsUpdated = db.update(MovieContract.VideoEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(MovieContract.TrailerEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:

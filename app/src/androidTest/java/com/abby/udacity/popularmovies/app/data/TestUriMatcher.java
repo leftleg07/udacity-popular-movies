@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created by heim on 7/30/16.
+ * Tests for uri matcher
  */
 @RunWith(AndroidJUnit4.class)
 public class TestUriMatcher {
@@ -30,9 +30,9 @@ public class TestUriMatcher {
     private static final Uri TEST_REVIEW_DIR = MovieContract.ReviewEntry.CONTENT_URI;
     private static final Uri TEST_REVIEW_ID_ITEM = MovieContract.ReviewEntry.buildReviewUri(REVIEW_ID);
     private static final Uri TEST_REVIEW_WITH_MOVIE_ITEM = MovieContract.ReviewEntry.buildReviewMovieUri(MOVIE_ID);
-    private static final Uri TEST_VIDEO_DIR = MovieContract.VideoEntry.CONTENT_URI;
-    private static final Uri TEST_VIDEO_ID_ITEM = MovieContract.VideoEntry.buildVideoUri(VIDEO_ID);
-    private static final Uri TEST_VIDEO_WITH_MOVIE_ITEM = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
+    private static final Uri TEST_VIDEO_DIR = MovieContract.TrailerEntry.CONTENT_URI;
+    private static final Uri TEST_VIDEO_ID_ITEM = MovieContract.TrailerEntry.buildTrailerUri(VIDEO_ID);
+    private static final Uri TEST_VIDEO_WITH_MOVIE_ITEM = MovieContract.TrailerEntry.buildVideoMovieUri(MOVIE_ID);
 
 
     @Test

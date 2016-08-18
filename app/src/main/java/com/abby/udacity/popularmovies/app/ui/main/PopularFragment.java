@@ -54,13 +54,13 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     private PopularAdaptor mAdapter;
 
-    @BindView(R.id.listView_movie)
+    @BindView(R.id.listView_popular_movie)
     GridView mListView;
-    @BindView(R.id.textView_empty)
+    @BindView(R.id.textView_popular_empty)
     TextView mEmptyText;
 
     private int mPosition = ListView.INVALID_POSITION;
-    private int mLoaderId = MOST_POPULAR_LOADER;
+    private int mLastLoaderId = MOST_POPULAR_LOADER;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -108,11 +108,11 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
                     int movieId = cursor.getInt(MovieContract.MovieColumns.INDEX_ID);
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     Uri uri = null;
-                    if (mLoaderId == MOST_POPULAR_LOADER) {
+                    if (mLastLoaderId == MOST_POPULAR_LOADER) {
                         uri = MovieContract.PopularMovieEntry.buildPopularMovieUri(movieId);
-                    } else if (mLoaderId == HIGHEST_RATED_LOADER) {
+                    } else if (mLastLoaderId == HIGHEST_RATED_LOADER) {
                         uri = MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(movieId);
-                    } else if (mLoaderId == FAVORITE_LOADER) {
+                    } else if (mLastLoaderId == FAVORITE_LOADER) {
                         uri = MovieContract.FavoriteMovieEntry.buildFavoriteMovieUri(movieId);
                     }
                     mCallback.onItemSelected(uri);
@@ -144,6 +144,8 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        mLastLoaderId = id;
+        mPosition = 0;
         Uri uri = null;
         if (id == MOST_POPULAR_LOADER) {
             uri = MovieContract.PopularMovieEntry.CONTENT_URI;
@@ -158,8 +160,9 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mLoaderId = loader.getId();
-
+        if(mLastLoaderId != loader.getId()) {
+            return;
+        }
         if (data.getCount() > 0) {
             mEmptyText.setVisibility(View.INVISIBLE);
             mAdapter.swapCursor(data);

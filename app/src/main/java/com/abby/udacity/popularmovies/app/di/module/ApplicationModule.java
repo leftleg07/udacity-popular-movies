@@ -26,7 +26,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 /**
  * A module to wrap the Application state and expose it to the graph.
  */
-
 @Module
 public class ApplicationModule {
     private final Context applicationContext;

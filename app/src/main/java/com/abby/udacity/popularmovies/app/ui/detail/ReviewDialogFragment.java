@@ -145,9 +145,9 @@ public class ReviewDialogFragment extends DialogFragment implements LoaderManage
     }
 
     static class ViewHolder {
-        @BindView(R.id.textView_author)
+        @BindView(R.id.textView_item_review_author)
         TextView mAuthorText;
-        @BindView(R.id.textView_content)
+        @BindView(R.id.textView_item_review_content)
         TextView mContentText;
 
         public ViewHolder(View view) {

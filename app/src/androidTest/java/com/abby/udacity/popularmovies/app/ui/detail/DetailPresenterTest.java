@@ -59,7 +59,7 @@ public class DetailPresenterTest {
     @Test
     public void testVideo() throws Exception {
 
-        Uri uri = MovieContract.VideoEntry.buildVideoMovieUri(MOVIE_ID);
+        Uri uri = MovieContract.TrailerEntry.buildVideoMovieUri(MOVIE_ID);
         mContentResolver.delete(uri, null, null);
         mContentResolver.registerContentObserver(uri, false, new ContentObserver(null) {
             @Override
@@ -71,7 +71,7 @@ public class DetailPresenterTest {
             }
         });
 
-        mPresenter.fetchVideo(MOVIE_ID);
+        mPresenter.fetchTrailer(MOVIE_ID);
 
         mSignal.await();
         assertTrue(mCursor.getCount() > 0);

@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Created by gsshop on 2016. 7. 28..
+ * Tests for database
  */
 @RunWith(AndroidJUnit4.class)
 public class TestDb {
@@ -29,7 +29,7 @@ public class TestDb {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
-        TestUtility.deleteDatabase(mContext);
+        TestUtil.deleteDatabase(mContext);
     }
 
     /**
@@ -44,7 +44,7 @@ public class TestDb {
         tableNameHashSet.add(MovieContract.HighestRatedMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.FavoriteMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.ReviewEntry.TABLE_NAME);
-        tableNameHashSet.add(MovieContract.VideoEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContract.TrailerEntry.TABLE_NAME);
 
         SQLiteDatabase db = new MovieDbHelper(
                 this.mContext).getWritableDatabase();
@@ -202,7 +202,7 @@ public class TestDb {
         entryColumnHashSet.clear();
         c.close();
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + MovieContract.VideoEntry.TABLE_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + MovieContract.TrailerEntry.TABLE_NAME + ")",
                 null);
 
         assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -210,13 +210,13 @@ public class TestDb {
 
         // Build a HashSet of all of the column names we want to look for
 
-        entryColumnHashSet.add(MovieContract.VideoEntry._ID);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_VIDEO_ID);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_MOVIE_ID);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_KEY);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_NAME);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_SIZE);
-        entryColumnHashSet.add(MovieContract.VideoEntry.COLUMN_TYPE);
+        entryColumnHashSet.add(MovieContract.TrailerEntry._ID);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_TRAILER_ID);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_MOVIE_ID);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_KEY);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_NAME);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_SIZE);
+        entryColumnHashSet.add(MovieContract.TrailerEntry.COLUMN_TYPE);
 
         columnNameIndex = c.getColumnIndex("name");
         do {
@@ -246,10 +246,10 @@ public class TestDb {
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
 
         // insert data
-        TestUtility.insertMoveEntryValues(mContext, MovieContract.PopularMovieEntry.TABLE_NAME);
+        TestUtil.insertMoveEntryValues(mContext, MovieContract.PopularMovieEntry.TABLE_NAME);
 
         Cursor cursor = db.query(
                 MovieContract.PopularMovieEntry.TABLE_NAME,  // Table to Query
@@ -263,7 +263,7 @@ public class TestDb {
 
         assertTrue( "Error: No Records returned from popular movie query", cursor.moveToFirst() );
 
-        TestUtility.validateCurrentRecord("Error: Popular Movie Query Validation Failed", cursor, testValues);
+        TestUtil.validateCurrentRecord("Error: Popular Movie Query Validation Failed", cursor, testValues);
 
         cursor.close();
 
@@ -283,10 +283,10 @@ public class TestDb {
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
 
         // insert data
-        TestUtility.insertMoveEntryValues(mContext, MovieContract.HighestRatedMovieEntry.TABLE_NAME);
+        TestUtil.insertMoveEntryValues(mContext, MovieContract.HighestRatedMovieEntry.TABLE_NAME);
 
         Cursor cursor = db.query(
                 MovieContract.HighestRatedMovieEntry.TABLE_NAME,  // Table to Query
@@ -300,7 +300,7 @@ public class TestDb {
 
         assertTrue( "Error: No Records returned from top related movie query", cursor.moveToFirst() );
 
-        TestUtility.validateCurrentRecord("Error: Top related Movie Query Validation Failed", cursor, testValues);
+        TestUtil.validateCurrentRecord("Error: Top related Movie Query Validation Failed", cursor, testValues);
 
         cursor.close();
         db.close();
@@ -318,10 +318,10 @@ public class TestDb {
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
-        ContentValues testValues = TestUtility.createMovieEntryValues();
+        ContentValues testValues = TestUtil.createMovieEntryValues();
 
         // insert data
-        TestUtility.insertMoveEntryValues(mContext, MovieContract.FavoriteMovieEntry.TABLE_NAME);
+        TestUtil.insertMoveEntryValues(mContext, MovieContract.FavoriteMovieEntry.TABLE_NAME);
 
         Cursor cursor = db.query(
                 MovieContract.FavoriteMovieEntry.TABLE_NAME,  // Table to Query
@@ -335,7 +335,7 @@ public class TestDb {
 
         assertTrue( "Error: No Records returned from favorite movie query", cursor.moveToFirst() );
 
-        TestUtility.validateCurrentRecord("Error: Favorite Movie Query Validation Failed", cursor, testValues);
+        TestUtil.validateCurrentRecord("Error: Favorite Movie Query Validation Failed", cursor, testValues);
 
         cursor.close();
         db.close();
@@ -352,10 +352,10 @@ public class TestDb {
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
-        ContentValues testValues = TestUtility.createReviewEntryValues();
+        ContentValues testValues = TestUtil.createReviewEntryValues();
 
         // insert data
-        TestUtility.insertReviewEntryValues(mContext);
+        TestUtil.insertReviewEntryValues(mContext);
 
         Cursor cursor = db.query(
                 MovieContract.ReviewEntry.TABLE_NAME,  // Table to Query
@@ -369,7 +369,7 @@ public class TestDb {
 
         assertTrue( "Error: No Records returned from review query", cursor.moveToFirst() );
 
-        TestUtility.validateCurrentRecord("Error: Review Query Validation Failed", cursor, testValues);
+        TestUtil.validateCurrentRecord("Error: Review Query Validation Failed", cursor, testValues);
 
         cursor.close();
         db.close();
@@ -387,13 +387,13 @@ public class TestDb {
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
-        ContentValues testValues = TestUtility.createVideoEntryValues();
+        ContentValues testValues = TestUtil.createVideoEntryValues();
 
         // insert data
-        TestUtility.insertVideoEntryValues(mContext);
+        TestUtil.insertVideoEntryValues(mContext);
 
         Cursor cursor = db.query(
-                MovieContract.VideoEntry.TABLE_NAME,  // Table to Query
+                MovieContract.TrailerEntry.TABLE_NAME,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -404,7 +404,7 @@ public class TestDb {
 
         assertTrue( "Error: No Records returned from video query", cursor.moveToFirst() );
 
-        TestUtility.validateCurrentRecord("Error: video Query Validation Failed", cursor, testValues);
+        TestUtil.validateCurrentRecord("Error: video Query Validation Failed", cursor, testValues);
 
         cursor.close();
         db.close();

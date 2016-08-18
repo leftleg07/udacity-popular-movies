@@ -85,6 +85,6 @@ public class PopularScreenTest {
     }
 
     private static DataInteraction onRow(Integer atPosition) {
-        return onData(anything()).inAdapterView(withId(R.id.listView_movie)).atPosition(atPosition);
+        return onData(anything()).inAdapterView(withId(R.id.listView_popular_movie)).atPosition(atPosition);
     }
 }

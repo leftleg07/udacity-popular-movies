@@ -3,7 +3,7 @@ package com.abby.udacity.popularmovies.app.data.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Immutable model class for a Movie.
+ * Immutable model class for a movie.
  */
 public class Movie  {
     // id

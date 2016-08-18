@@ -5,7 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by gsshop on 2016. 7. 28..
+ * Helper for managing {@link SQLiteDatabase} that stores data for
+ * {@link MovieProvider}.
  */
 public class MovieDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -63,14 +64,14 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 " );";
 
         // review table
-        final String SQL_CREATE_VIDEO_TABLE = "CREATE TABLE " + MovieContract.VideoEntry.TABLE_NAME + " (" +
-                MovieContract.VideoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieContract.VideoEntry.COLUMN_VIDEO_ID + " TEXT UNIQUE NOT NULL," +
-                MovieContract.VideoEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
-                MovieContract.VideoEntry.COLUMN_KEY + " TEXT NOT NULL," +
-                MovieContract.VideoEntry.COLUMN_NAME + " TEXT NOT NULL," +
-                MovieContract.VideoEntry.COLUMN_SIZE + " INTEGER NOT NULL," +
-                MovieContract.VideoEntry.COLUMN_TYPE + " TEXT NOT NULL" +
+        final String SQL_CREATE_VIDEO_TABLE = "CREATE TABLE " + MovieContract.TrailerEntry.TABLE_NAME + " (" +
+                MovieContract.TrailerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                MovieContract.TrailerEntry.COLUMN_TRAILER_ID + " TEXT UNIQUE NOT NULL," +
+                MovieContract.TrailerEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
+                MovieContract.TrailerEntry.COLUMN_KEY + " TEXT NOT NULL," +
+                MovieContract.TrailerEntry.COLUMN_NAME + " TEXT NOT NULL," +
+                MovieContract.TrailerEntry.COLUMN_SIZE + " INTEGER NOT NULL," +
+                MovieContract.TrailerEntry.COLUMN_TYPE + " TEXT NOT NULL" +
                 " );";
 
         db.execSQL(SQL_CREATE_POPULAR_MOVE_TABLE);
@@ -87,7 +88,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.HighestRatedMovieEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.FavoriteMovieEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.ReviewEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.VideoEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.TrailerEntry.TABLE_NAME);
         onCreate(db);
     }
 }

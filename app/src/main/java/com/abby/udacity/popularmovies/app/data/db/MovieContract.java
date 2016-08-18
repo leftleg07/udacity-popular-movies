@@ -6,24 +6,14 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Created by gsshop on 2016. 7. 28..
+ * Contract class for interacting with {@link MovieProvider}.
  */
 public class MovieContract {
-    // The "Content authority" is a name for the entire content provider, similar to the
-    // relationship between a domain name and its website.  A convenient string to use for the
-    // content authority is the package name for the app, which is guaranteed to be unique on the
-    // device.
     public static final String CONTENT_AUTHORITY = "com.abby.udacity.popularmovies.app";
 
-    // Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
-    // the content provider.
+
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    // Possible paths (appended to base content URI for possible URI's)
-    // For instance, content://com.example.android.sunshine.app/weather/ is a valid path for
-    // looking at weather data. content://com.example.android.sunshine.app/givemeroot/ will fail,
-    // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
-    // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
     public static final String PATH_POPULAR_MOVIE = "popular_movie";
     public static final String PATH_HIGHEST_RATED_MOVIE = "highest_rated_movie";
     public static final String PATH_FAVORITE_MOVIE = "favorite_movie";
@@ -159,10 +149,10 @@ public class MovieContract {
         public static final int INDEX_COLUMN_URL = 5;
     }
 
-    public static final class VideoEntry implements BaseColumns {
-        public static final String TABLE_NAME = "video";
+    public static final class TrailerEntry implements BaseColumns {
+        public static final String TABLE_NAME = "trailer";
 
-        public static final String COLUMN_VIDEO_ID = "video_id";
+        public static final String COLUMN_TRAILER_ID = "trailer_id";
         public static final String COLUMN_MOVIE_ID = "movie_id";
         public static final String COLUMN_KEY = "key";
         public static final String COLUMN_NAME = "name";
@@ -172,7 +162,7 @@ public class MovieContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_VIDEO).build();
 
-        public static Uri buildVideoUri(String id) {
+        public static Uri buildTrailerUri(String id) {
             return CONTENT_URI.buildUpon().appendEncodedPath(id).build();
         }
 
@@ -190,7 +180,7 @@ public class MovieContract {
          */
         public static final String[] PROJECTION = new String[]{
                 _ID,
-                COLUMN_VIDEO_ID,
+                COLUMN_TRAILER_ID,
                 COLUMN_MOVIE_ID,
                 COLUMN_KEY,
                 COLUMN_NAME,
@@ -201,7 +191,7 @@ public class MovieContract {
 
         // these indices must match the projection
         public static final int INDEX_ID = 0;
-        public static final int INDEX_COLUMN_VIDEO_ID = 1;
+        public static final int INDEX_COLUMN_TRAILER_ID = 1;
         public static final int INDEX_COLUMN_MOVIE_ID = 2;
         public static final int INDEX_COLUMN_KEY = 3;
         public static final int INDEX_COLUMN_NAME = 4;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 /**
- * Created by gsshop on 2016. 8. 8..
+ * utility
  */
 public class Util {
     public static boolean isOnline(Context context) {

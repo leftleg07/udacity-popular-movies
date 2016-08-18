@@ -32,16 +32,16 @@ import butterknife.OnClick;
 
 
 /**
- * Main UI for the mMovie detail screen.
+ *  UI for the Movie detail screen.
  */
 public class DetailFragment extends Fragment implements DetailContract.View, LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = DetailFragment.class.getSimpleName();
 
     public static final String ARG_PARAM_MOVIE = "_arg_param_movie";
-    private static final int DETAIL_LOADER = 10;
-    private static final int REVIEW_LOADER = 20;
-    private static final int VIDEO_LOADER = 30;
-    private static final int FAVORITE_LOADER = 40;
+    private static final int DETAIL_LOADER = 0;
+    private static final int REVIEW_LOADER = 1;
+    private static final int Trailer_LOADER = 2;
+    private static final int FAVORITE_LOADER = 3;
 
     @BindView(R.id.textView_detail_title)
     TextView mTitleText;
@@ -126,6 +126,7 @@ public class DetailFragment extends Fragment implements DetailContract.View, Loa
                         values.put(MovieContract.MovieColumns.COLUMN_RELEASE_DATE, mMovie.mReleaseDate);
 
                         mContentResolver.insert(uri, values);
+                        mContentResolver.notifyChange(MovieContract.FavoriteMovieEntry.CONTENT_URI, null, false);
                     }
                 } else {
 
@@ -144,9 +145,9 @@ public class DetailFragment extends Fragment implements DetailContract.View, Loa
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
             getLoaderManager().initLoader(REVIEW_LOADER, null, this);
-            getLoaderManager().initLoader(VIDEO_LOADER, null, this);
+            getLoaderManager().initLoader(Trailer_LOADER, null, this);
 
-            mPresenter.fetchVideo(mMovieId);
+            mPresenter.fetchTrailer(mMovieId);
             mPresenter.fetchReview(mMovieId);
         }
     }
@@ -162,11 +163,11 @@ public class DetailFragment extends Fragment implements DetailContract.View, Loa
             case DETAIL_LOADER:
                 return new CursorLoader(getActivity(), mUri, MovieContract.MovieColumns.PROJECTION, null, null, null);
             case REVIEW_LOADER:
-                return new CursorLoader(getActivity(), MovieContract.ReviewEntry.buildReviewMovieUri(mMovieId), null, null, null, null);
-            case VIDEO_LOADER:
-                return new CursorLoader(getActivity(), MovieContract.VideoEntry.buildVideoMovieUri(mMovieId), null, null, null, null);
+                return new CursorLoader(getActivity(), MovieContract.ReviewEntry.buildReviewMovieUri(mMovieId), MovieContract.ReviewEntry.PROJECTION, null, null, null);
+            case Trailer_LOADER:
+                return new CursorLoader(getActivity(), MovieContract.TrailerEntry.buildVideoMovieUri(mMovieId), MovieContract.TrailerEntry.PROJECTION, null, null, null);
             case FAVORITE_LOADER:
-                return new CursorLoader(getActivity(), MovieContract.FavoriteMovieEntry.buildFavoriteMovieUri(mMovieId), null, null, null, null);
+                return new CursorLoader(getActivity(), MovieContract.FavoriteMovieEntry.buildFavoriteMovieUri(mMovieId), MovieContract.FavoriteMovieEntry.PROJECTION, null, null, null);
         }
         return null;
     }
@@ -191,8 +192,8 @@ public class DetailFragment extends Fragment implements DetailContract.View, Loa
                 Log.i(TAG, "review count: " + data.getCount());
                 mReviewCountText.setText(data.getCount() + " count");
                 break;
-            case VIDEO_LOADER:
-                Log.i(TAG, "video count: " + data.getCount());
+            case Trailer_LOADER:
+                Log.i(TAG, "trailer count: " + data.getCount());
                 mTrailerCountText.setText(data.getCount() + " count");
                 break;
             case FAVORITE_LOADER:

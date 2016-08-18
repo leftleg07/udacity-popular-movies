@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView_author"
+        android:id="@+id/textView_item_review_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 
     <TextView
-        android:id="@+id/textView_content"
+        android:id="@+id/textView_item_review_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

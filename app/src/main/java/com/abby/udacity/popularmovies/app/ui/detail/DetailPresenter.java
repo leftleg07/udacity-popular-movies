@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.abby.udacity.popularmovies.app.data.db.MovieContract;
 import com.abby.udacity.popularmovies.app.data.model.Review;
-import com.abby.udacity.popularmovies.app.data.model.Video;
+import com.abby.udacity.popularmovies.app.data.model.Trailer;
 import com.abby.udacity.popularmovies.app.data.network.TheMovieDBApiService;
 import com.google.gson.Gson;
 
@@ -28,7 +28,8 @@ import dagger.internal.Preconditions;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by gsshop on 2016. 8. 9..
+ * Listens to user actions from the UI ({@link DetailFragment}), retrieves the data and updates the
+ * UI as required.
  */
 public class DetailPresenter implements DetailContract.Presenter {
     private static final String TAG = DetailPresenter.class.getSimpleName();
@@ -36,12 +37,9 @@ public class DetailPresenter implements DetailContract.Presenter {
     private final String OWM_RESULTS = "results";
 
     private final DetailContract.View mView;
-
     private final Context mContext;
-
     private final TheMovieDBApiService mApiService;
-
-    private ContentResolver mContentResolver;
+    private final ContentResolver mContentResolver;
 
 
     @Inject
@@ -60,15 +58,15 @@ public class DetailPresenter implements DetailContract.Presenter {
 
 
     @Override
-    public void fetchVideo(long movieId) {
+    public void fetchTrailer(long movieId) {
         try {
-            String jsonStr = mApiService.getVideo(movieId).subscribeOn(Schedulers.newThread()).toBlocking().single();
+            String jsonStr = mApiService.getTrailer(movieId).subscribeOn(Schedulers.newThread()).toBlocking().single();
             // These are the names of the JSON objects that need to be extracted.
 
             JSONObject videoJson = new JSONObject(jsonStr);
             JSONArray videoArray = videoJson.getJSONArray(OWM_RESULTS);
-            Video[] videos = new Gson().fromJson(videoArray.toString(), Video[].class);
-            updateLocalVideoData(videos, movieId);
+            Trailer[] videos = new Gson().fromJson(videoArray.toString(), Trailer[].class);
+            updateLocalTrailerData(videos, movieId);
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing feed: " + e.toString());
             return;
@@ -85,33 +83,33 @@ public class DetailPresenter implements DetailContract.Presenter {
     }
 
 
-    private void updateLocalVideoData(Video[] entries, long movieId) throws RemoteException, OperationApplicationException {
+    private void updateLocalTrailerData(Trailer[] entries, long movieId) throws RemoteException, OperationApplicationException {
         final ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
 // Build hash table of incoming entries
-        final HashMap<String, Video> entryMap = new HashMap<>();
-        for (Video e : entries) {
-            entryMap.put(e.mVideoId, e);
+        final HashMap<String, Trailer> entryMap = new HashMap<>();
+        for (Trailer e : entries) {
+            entryMap.put(e.mTrailerId, e);
         }
 
-        Uri contentUri = MovieContract.VideoEntry.buildVideoMovieUri(movieId);
-        Cursor cursor = mContentResolver.query(contentUri, MovieContract.VideoEntry.PROJECTION, null, null, null);
+        Uri contentUri = MovieContract.TrailerEntry.buildVideoMovieUri(movieId);
+        Cursor cursor = mContentResolver.query(contentUri, MovieContract.TrailerEntry.PROJECTION, null, null, null);
         Preconditions.checkNotNull(cursor);
 
         Log.i(TAG, "Found " + cursor.getCount() + " local entries. Computing merge solution...");
 
         while (cursor.moveToNext()) {
-            String videoId = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_VIDEO_ID);
-            Video match = entryMap.get(videoId);
+            String trailerId = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_TRAILER_ID);
+            Trailer match = entryMap.get(trailerId);
             if (match != null) {
                 // Entry exists. Remove from entry map to prevent insert later.
-                entryMap.remove(videoId);
+                entryMap.remove(trailerId);
                 // Check to see if the entry needs to be updated
-                long mId = cursor.getLong(MovieContract.VideoEntry.INDEX_COLUMN_MOVIE_ID);
-                String key = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_KEY);
-                String name = cursor.getString(MovieContract.VideoEntry.INDEX_COLUMN_NAME);
-                long size = cursor.getLong(MovieContract.VideoEntry.INDEX_COLUMN_SIZE);
-                Uri existingUri = MovieContract.VideoEntry.buildVideoUri(videoId);
+                long mId = cursor.getLong(MovieContract.TrailerEntry.INDEX_COLUMN_MOVIE_ID);
+                String key = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_KEY);
+                String name = cursor.getString(MovieContract.TrailerEntry.INDEX_COLUMN_NAME);
+                long size = cursor.getLong(MovieContract.TrailerEntry.INDEX_COLUMN_SIZE);
+                Uri existingUri = MovieContract.TrailerEntry.buildTrailerUri(trailerId);
                 if ((mId != movieId) ||
                         (match.mKey != null && !match.mKey.equals(key)) ||
                         (match.mName != null && !match.mName.equals(name)) ||
@@ -119,12 +117,12 @@ public class DetailPresenter implements DetailContract.Presenter {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(MovieContract.VideoEntry.COLUMN_VIDEO_ID, match.mVideoId)
-                            .withValue(MovieContract.VideoEntry.COLUMN_MOVIE_ID, movieId)
-                            .withValue(MovieContract.VideoEntry.COLUMN_KEY, match.mKey)
-                            .withValue(MovieContract.VideoEntry.COLUMN_NAME, match.mName)
-                            .withValue(MovieContract.VideoEntry.COLUMN_SIZE, match.mSize)
-                            .withValue(MovieContract.VideoEntry.COLUMN_TYPE, match.mType)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, match.mTrailerId)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_MOVIE_ID, movieId)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_KEY, match.mKey)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_NAME, match.mName)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_SIZE, match.mSize)
+                            .withValue(MovieContract.TrailerEntry.COLUMN_TYPE, match.mType)
                             .build());
                 } else {
                     Log.i(TAG, "No action: " + existingUri);
@@ -132,22 +130,22 @@ public class DetailPresenter implements DetailContract.Presenter {
 
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = MovieContract.VideoEntry.buildVideoUri(videoId);
+                Uri deleteUri = MovieContract.TrailerEntry.buildTrailerUri(trailerId);
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
             }
         }
         cursor.close();
 
-        for (Video entry : entryMap.values()) {
-            Log.i(TAG, "Scheduling insert: entry_id=" + entry.mVideoId);
-            batch.add(ContentProviderOperation.newInsert(MovieContract.VideoEntry.CONTENT_URI)
-                    .withValue(MovieContract.VideoEntry.COLUMN_VIDEO_ID, entry.mVideoId)
-                    .withValue(MovieContract.VideoEntry.COLUMN_MOVIE_ID, movieId)
-                    .withValue(MovieContract.VideoEntry.COLUMN_KEY, entry.mKey)
-                    .withValue(MovieContract.VideoEntry.COLUMN_NAME, entry.mName)
-                    .withValue(MovieContract.VideoEntry.COLUMN_SIZE, entry.mSize)
-                    .withValue(MovieContract.VideoEntry.COLUMN_TYPE, entry.mType)
+        for (Trailer entry : entryMap.values()) {
+            Log.i(TAG, "Scheduling insert: entry_id=" + entry.mTrailerId);
+            batch.add(ContentProviderOperation.newInsert(MovieContract.TrailerEntry.CONTENT_URI)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, entry.mTrailerId)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_MOVIE_ID, movieId)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_KEY, entry.mKey)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_NAME, entry.mName)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_SIZE, entry.mSize)
+                    .withValue(MovieContract.TrailerEntry.COLUMN_TYPE, entry.mType)
                     .build());
         }
 
