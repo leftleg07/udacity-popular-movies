@@ -1,5 +1,6 @@
 package com.abby.udacity.popularmovies.app.ui.detail;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -7,7 +8,6 @@ import com.abby.udacity.popularmovies.app.MainApplication;
 import com.abby.udacity.popularmovies.app.R;
 import com.abby.udacity.popularmovies.app.di.component.DetailComponent;
 import com.abby.udacity.popularmovies.app.di.module.DetailModule;
-import com.abby.udacity.popularmovies.app.ui.popular.PopularFragment;
 
 import javax.inject.Inject;
 
@@ -24,13 +24,18 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        String uri = getIntent().getStringExtra(PopularFragment.PARAM_MOVIE_URI);
+
 
         // Display the fragment as the main content.
 
         DetailFragment fragment =
                 (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.content);
         if (fragment == null) {
+                // Create the detail fragment and add it to the activity
+                // using a fragment transaction.
+
+            Uri uri = getIntent().getData();
+
             // Create the fragment
             fragment = DetailFragment.newInstance(uri);
             getSupportFragmentManager().beginTransaction()

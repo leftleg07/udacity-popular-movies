@@ -33,8 +33,6 @@ public class ApplicationModule {
 
     public ApplicationModule(Context applicationContext) {
         this.applicationContext = applicationContext;
-
-
     }
 
     @Provides
@@ -44,8 +42,16 @@ public class ApplicationModule {
     }
 
     @Provides
+    @Singleton // Application reference must come from AppModule.class
+    public SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(applicationContext);
+    }
+
+    @Provides
     @Singleton
-    public TheMovieDBApiService provideTheMovieDBApiService(OkHttpClient client) {
+    public TheMovieDBApiService provideTheMovieDBApiService() {
+
+        OkHttpClient client = buildOkHttpClient();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDBApiService.POPULAR_MOVE_BASE_URL)
@@ -58,9 +64,7 @@ public class ApplicationModule {
         return retrofit.create(TheMovieDBApiService.class);
     }
 
-    @Provides
-    @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    private OkHttpClient buildOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -83,12 +87,5 @@ public class ApplicationModule {
         return httpClient.build();
 
     }
-
-    @Provides
-    @Singleton // Application reference must come from AppModule.class
-    public SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(applicationContext);
-    }
-
 
 }

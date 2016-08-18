@@ -3,7 +3,7 @@ package com.abby.udacity.popularmovies.app.di;
 
 import com.abby.udacity.popularmovies.app.network.TestAPIService;
 import com.abby.udacity.popularmovies.app.ui.detail.DetailPresenterTest;
-import com.abby.udacity.popularmovies.app.ui.popular.PopularPresenterTest;
+import com.abby.udacity.popularmovies.app.ui.main.PopularPresenterTest;
 
 import javax.inject.Singleton;
 

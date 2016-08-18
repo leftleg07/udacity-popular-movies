@@ -8,7 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.abby.udacity.popularmovies.app.R;
 import com.abby.udacity.popularmovies.app.data.db.MovieContract;
-import com.abby.udacity.popularmovies.app.ui.popular.PopularFragment;
+import com.abby.udacity.popularmovies.app.ui.main.PopularFragment;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 public class DetailScreenTest {
 
-    private static final long MOVIE_ID = 47933;
+    private static final long MOVIE_ID = 76341;
 
 
     /**
@@ -64,7 +64,7 @@ public class DetailScreenTest {
         intent.putExtra(PopularFragment.PARAM_MOVIE_URI, uriString);
         mActivityRule.launchActivity(intent);
 
-        onView(withId(R.id.button_trailer)).perform(click());
+        onView(withId(R.id.button_detail_trailer)).perform(click());
 
         // wait for activity finished
         while(!mActivityRule.getActivity().isFinishing()) {
@@ -81,7 +81,7 @@ public class DetailScreenTest {
         intent.putExtra(PopularFragment.PARAM_MOVIE_URI, uriString);
         mActivityRule.launchActivity(intent);
 
-        onView(withId(R.id.button_review)).perform(click());
+        onView(withId(R.id.button_detail_review)).perform(click());
 
         // wait for activity finished
         while(!mActivityRule.getActivity().isFinishing()) {

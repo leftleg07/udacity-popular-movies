@@ -40,7 +40,7 @@ public class TestProvider {
         );
 
         mContentResolver.delete(
-                MovieContract.TopRatedMovieEntry.CONTENT_URI,
+                MovieContract.HighestRatedMovieEntry.CONTENT_URI,
                 null,
                 null
         );
@@ -76,7 +76,7 @@ public class TestProvider {
         cursor.close();
 
         cursor = mContentResolver.query(
-                MovieContract.TopRatedMovieEntry.CONTENT_URI,
+                MovieContract.HighestRatedMovieEntry.CONTENT_URI,
                 null,
                 null,
                 null,
@@ -158,16 +158,16 @@ public class TestProvider {
                 MovieContract.PopularMovieEntry.CONTENT_TYPE, type);
 
         type = mContentResolver.getType(MovieContract.PopularMovieEntry.buildPopularMovieUri(movieId));
-        assertEquals("Error: the TopRatedMovieEntry CONTENT_URI with id should return PopularMovieEntry.CONTENT_ITEM_TYPE",
+        assertEquals("Error: the HighestRatedMovieEntry CONTENT_URI with id should return PopularMovieEntry.CONTENT_ITEM_TYPE",
                 MovieContract.PopularMovieEntry.CONTENT_ITEM_TYPE, type);
 
-        type = mContentResolver.getType(MovieContract.TopRatedMovieEntry.CONTENT_URI);
-        assertEquals("Error: the TopRatedMovieEntry CONTENT_URI should return TopRatedMovieEntry.CONTENT_TYPE",
-                MovieContract.TopRatedMovieEntry.CONTENT_TYPE, type);
+        type = mContentResolver.getType(MovieContract.HighestRatedMovieEntry.CONTENT_URI);
+        assertEquals("Error: the HighestRatedMovieEntry CONTENT_URI should return HighestRatedMovieEntry.CONTENT_TYPE",
+                MovieContract.HighestRatedMovieEntry.CONTENT_TYPE, type);
 
-        type = mContentResolver.getType(MovieContract.TopRatedMovieEntry.buildTopRelatedMovieUri(movieId));
-        assertEquals("Error: the TopRatedMovieEntry CONTENT_URI with id should return TopRatedMovieEntry.CONTENT_ITEM_TYPE",
-                MovieContract.TopRatedMovieEntry.CONTENT_ITEM_TYPE, type);
+        type = mContentResolver.getType(MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(movieId));
+        assertEquals("Error: the HighestRatedMovieEntry CONTENT_URI with id should return HighestRatedMovieEntry.CONTENT_ITEM_TYPE",
+                MovieContract.HighestRatedMovieEntry.CONTENT_ITEM_TYPE, type);
 
         type = mContentResolver.getType(MovieContract.FavoriteMovieEntry.CONTENT_URI);
         assertEquals("Error: the FavoriteMovieEntry CONTENT_URI should return FavoriteMovieEntry.CONTENT_TYPE",
@@ -226,7 +226,7 @@ public class TestProvider {
         ContentValues updateValues = new ContentValues(testValues);
         updateValues.put(MovieContract.MovieColumns.COLUMN_VOTE_AVERAGE, 1.2f);
 
-        Uri uri = mContentResolver.insert(MovieContract.TopRatedMovieEntry.CONTENT_URI, testValues);
+        Uri uri = mContentResolver.insert(MovieContract.HighestRatedMovieEntry.CONTENT_URI, testValues);
         long movieRowId = ContentUris.parseId(uri);
 
         assertEquals("Error: Top related Movie Query Validation Failed", testValues.getAsLong(MovieContract.MovieColumns._ID).longValue(), movieRowId);

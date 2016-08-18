@@ -1,4 +1,4 @@
-package com.abby.udacity.popularmovies.app.ui.popular;
+package com.abby.udacity.popularmovies.app.ui.main;
 
 import android.content.Context;
 import android.database.Cursor;

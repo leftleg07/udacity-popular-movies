@@ -41,7 +41,7 @@ public class TestDb {
     public void testCreateDb() throws Exception {
         final HashSet<String> tableNameHashSet = new HashSet<String>();
         tableNameHashSet.add(MovieContract.PopularMovieEntry.TABLE_NAME);
-        tableNameHashSet.add(MovieContract.TopRatedMovieEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContract.HighestRatedMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.FavoriteMovieEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.ReviewEntry.TABLE_NAME);
         tableNameHashSet.add(MovieContract.VideoEntry.TABLE_NAME);
@@ -106,7 +106,7 @@ public class TestDb {
         entryColumnHashSet.clear();
         c.close();
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + MovieContract.TopRatedMovieEntry.TABLE_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + MovieContract.HighestRatedMovieEntry.TABLE_NAME + ")",
                 null);
 
         assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -286,10 +286,10 @@ public class TestDb {
         ContentValues testValues = TestUtility.createMovieEntryValues();
 
         // insert data
-        TestUtility.insertMoveEntryValues(mContext, MovieContract.TopRatedMovieEntry.TABLE_NAME);
+        TestUtility.insertMoveEntryValues(mContext, MovieContract.HighestRatedMovieEntry.TABLE_NAME);
 
         Cursor cursor = db.query(
-                MovieContract.TopRatedMovieEntry.TABLE_NAME,  // Table to Query
+                MovieContract.HighestRatedMovieEntry.TABLE_NAME,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause

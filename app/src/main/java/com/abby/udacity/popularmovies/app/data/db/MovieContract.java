@@ -25,7 +25,7 @@ public class MovieContract {
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
     public static final String PATH_POPULAR_MOVIE = "popular_movie";
-    public static final String PATH_TOP_RATED_MOVIE = "top_rated_movie";
+    public static final String PATH_HIGHEST_RATED_MOVIE = "highest_rated_movie";
     public static final String PATH_FAVORITE_MOVIE = "favorite_movie";
     public static final String PATH_MOVIE = "movie";
     public static final String PATH_REVIEW = "review";
@@ -47,8 +47,8 @@ public class MovieContract {
                 COLUMN_ORIGINAL_TITLE,
                 COLUMN_POSTER_PATH,
                 COLUMN_OVERVIEW,
-                COLUMN_VOTE_AVERAGE,
                 COLUMN_POPULARITY,
+                COLUMN_VOTE_AVERAGE,
                 COLUMN_RELEASE_DATE
 
         };
@@ -57,9 +57,9 @@ public class MovieContract {
         int INDEX_COLUMN_ORIGINAL_TITLE = 1;
         int INDEX_COLUMN_POSTER_PATH = 2;
         int INDEX_COLUMN_OVERVIEW = 3;
-        int INDEX_COLUMN_VOTE_AVERAGE = 4;
-        int INDEX_COLUMN_POPULARITY = 5;
-        int INDEX_RELEASE_DATE = 6;
+        int INDEX_COLUMN_POPULARITY = 4;
+        int INDEX_COLUMN_VOTE_AVERAGE = 5;
+        int INDEX_COLUMN_RELEASE_DATE = 6;
     }
 
     public static final class PopularMovieEntry {
@@ -78,16 +78,16 @@ public class MovieContract {
         }
     }
 
-    public static final class TopRatedMovieEntry {
+    public static final class HighestRatedMovieEntry {
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TOP_RATED_MOVIE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_HIGHEST_RATED_MOVIE).build();
 
-        public static final String TABLE_NAME = "top_rated";
+        public static final String TABLE_NAME = "highest_rated";
 
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RATED_MOVIE;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HIGHEST_RATED_MOVIE;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOP_RATED_MOVIE;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HIGHEST_RATED_MOVIE;
 
         public static Uri buildTopRelatedMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -143,8 +143,8 @@ public class MovieContract {
          */
         public static final String[] PROJECTION = new String[]{
                 _ID,
-                COLUMN_MOVIE_ID,
                 COLUMN_REVIEW_ID,
+                COLUMN_MOVIE_ID,
                 COLUMN_AUTHOR,
                 COLUMN_CONTENT,
                 COLUMN_URL,
@@ -152,8 +152,8 @@ public class MovieContract {
 
         // these indices must match the projection
         public static final int INDEX_ID = 0;
-        public static final int INDEX_COLUMN_MOVIE_ID = 1;
-        public static final int INDEX_COLUMN_REVIEW_ID = 2;
+        public static final int INDEX_COLUMN_REVIEW_ID = 1;
+        public static final int INDEX_COLUMN_MOVIE_ID = 2;
         public static final int INDEX_COLUMN_AUTHOR = 3;
         public static final int INDEX_COLUMN_CONTENT = 4;
         public static final int INDEX_COLUMN_URL = 5;

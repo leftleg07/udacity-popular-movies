@@ -37,14 +37,14 @@ public class TestAPIService {
 
     @Test
     public void testMostPopularMovie() throws Exception {
-        String order = mContext.getString(R.string.pref_order_value_most_popular);
+        String order = mContext.getString(R.string.pref_mode_value_most_popular);
         String movie = mApiService.getPopularMovie(order).toBlocking().single();
         assertTrue(movie != null && movie.length() > 0);
     }
 
     @Test
     public void testToRatedMovie() throws Exception {
-        String order = mContext.getString(R.string.pref_order_value_top_rated);
+        String order = mContext.getString(R.string.pref_mode_value_highest_rated);
         String movie = mApiService.getPopularMovie(order).toBlocking().single();
         assertTrue(movie != null && movie.length() > 0);
     }

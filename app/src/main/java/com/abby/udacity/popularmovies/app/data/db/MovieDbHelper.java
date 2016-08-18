@@ -30,7 +30,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 " );";
 
         // top related movie table
-        final String SQL_CREATE_TOP_RELATED_MOVE_TABLE = "CREATE TABLE " + MovieContract.TopRatedMovieEntry.TABLE_NAME + " (" +
+        final String SQL_CREATE_TOP_RELATED_MOVE_TABLE = "CREATE TABLE " + MovieContract.HighestRatedMovieEntry.TABLE_NAME + " (" +
                 MovieContract.MovieColumns._ID + " INTEGER PRIMARY KEY," +
                 MovieContract.MovieColumns.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL," +
                 MovieContract.MovieColumns.COLUMN_POSTER_PATH + " TEXT NOT NULL," +
@@ -84,7 +84,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.PopularMovieEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.TopRatedMovieEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.HighestRatedMovieEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.FavoriteMovieEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.ReviewEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.VideoEntry.TABLE_NAME);

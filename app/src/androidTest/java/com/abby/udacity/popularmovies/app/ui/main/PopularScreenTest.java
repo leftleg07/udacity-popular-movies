@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.abby.udacity.popularmovies.app.ui.popular;
+package com.abby.udacity.popularmovies.app.ui.main;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -52,8 +52,8 @@ public class PopularScreenTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<PopularActivity> mActivityTestRule =
-            new ActivityTestRule<>(PopularActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class);
 
     @Test
     public void testGridView() throws Exception {
@@ -85,6 +85,6 @@ public class PopularScreenTest {
     }
 
     private static DataInteraction onRow(Integer atPosition) {
-        return onData(anything()).inAdapterView(withId(R.id.listview_favorite)).atPosition(atPosition);
+        return onData(anything()).inAdapterView(withId(R.id.listView_movie)).atPosition(atPosition);
     }
 }

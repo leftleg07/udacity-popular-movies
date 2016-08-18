@@ -15,8 +15,8 @@ import android.support.annotation.Nullable;
 public class MovieProvider extends ContentProvider {
     public static final int POPULAR_MOVIE = 100;
     public static final int POPULAR_MOVIE_WITH_ID = 101;
-    public static final int TOP_RATED_MOVIE = 200;
-    public static final int TOP_RATED_MOVIE_WITH_ID = 201;
+    public static final int HIGHEST_RATED_MOVIE = 200;
+    public static final int HIGHEST_RATED_MOVIE_WITH_ID = 201;
     public static final int FAVORITE_MOVIE = 300;
     public static final int FAVORITE_MOVIE_WITH_ID = 301;
     public static final int REVIEW = 400;
@@ -37,8 +37,8 @@ public class MovieProvider extends ContentProvider {
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, MovieContract.PATH_POPULAR_MOVIE, POPULAR_MOVIE);
         matcher.addURI(authority, MovieContract.PATH_POPULAR_MOVIE + "/#", POPULAR_MOVIE_WITH_ID);
-        matcher.addURI(authority, MovieContract.PATH_TOP_RATED_MOVIE, TOP_RATED_MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_TOP_RATED_MOVIE + "/#", TOP_RATED_MOVIE_WITH_ID);
+        matcher.addURI(authority, MovieContract.PATH_HIGHEST_RATED_MOVIE, HIGHEST_RATED_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_HIGHEST_RATED_MOVIE + "/#", HIGHEST_RATED_MOVIE_WITH_ID);
         matcher.addURI(authority, MovieContract.PATH_FAVORITE_MOVIE, FAVORITE_MOVIE);
         matcher.addURI(authority, MovieContract.PATH_FAVORITE_MOVIE + "/#", FAVORITE_MOVIE_WITH_ID);
         matcher.addURI(authority, MovieContract.PATH_REVIEW, REVIEW);
@@ -79,13 +79,13 @@ public class MovieProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
-            case TOP_RATED_MOVIE_WITH_ID:
+            case HIGHEST_RATED_MOVIE_WITH_ID:
                 selection = MovieContract.MovieColumns._ID + " =? ";
                 selectionArgs = new String[]{Long.toString(ContentUris.parseId(uri))};
-            case TOP_RATED_MOVIE:
+            case HIGHEST_RATED_MOVIE:
                 sortOrder = MovieContract.MovieColumns.COLUMN_VOTE_AVERAGE + " DESC";
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MovieContract.TopRatedMovieEntry.TABLE_NAME,
+                        MovieContract.HighestRatedMovieEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -98,7 +98,7 @@ public class MovieProvider extends ContentProvider {
                 selection = MovieContract.MovieColumns._ID + " =? ";
                 selectionArgs = new String[]{Long.toString(ContentUris.parseId(uri))};
             case FAVORITE_MOVIE:
-                sortOrder = MovieContract.MovieColumns._ID + " ASC";
+                sortOrder = MovieContract.FavoriteMovieEntry.COLUMN_REGISTERED_DATE + " ASC";
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         MovieContract.FavoriteMovieEntry.TABLE_NAME,
                         projection,
@@ -181,10 +181,10 @@ public class MovieProvider extends ContentProvider {
                 return MovieContract.PopularMovieEntry.CONTENT_TYPE;
             case POPULAR_MOVIE_WITH_ID:
                 return MovieContract.PopularMovieEntry.CONTENT_ITEM_TYPE;
-            case TOP_RATED_MOVIE:
-                return MovieContract.TopRatedMovieEntry.CONTENT_TYPE;
-            case TOP_RATED_MOVIE_WITH_ID:
-                return MovieContract.TopRatedMovieEntry.CONTENT_ITEM_TYPE;
+            case HIGHEST_RATED_MOVIE:
+                return MovieContract.HighestRatedMovieEntry.CONTENT_TYPE;
+            case HIGHEST_RATED_MOVIE_WITH_ID:
+                return MovieContract.HighestRatedMovieEntry.CONTENT_ITEM_TYPE;
             case FAVORITE_MOVIE:
                 return MovieContract.FavoriteMovieEntry.CONTENT_TYPE;
             case FAVORITE_MOVIE_WITH_ID:
@@ -216,12 +216,12 @@ public class MovieProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
-            case TOP_RATED_MOVIE:
-            case TOP_RATED_MOVIE_WITH_ID: {
+            case HIGHEST_RATED_MOVIE:
+            case HIGHEST_RATED_MOVIE_WITH_ID: {
                 ContentValues my = new ContentValues(values);
-                long _id = db.insert(MovieContract.TopRatedMovieEntry.TABLE_NAME, null, values);
+                long _id = db.insert(MovieContract.HighestRatedMovieEntry.TABLE_NAME, null, values);
                 if (_id > 0)
-                    returnUri = MovieContract.TopRatedMovieEntry.buildTopRelatedMovieUri(_id);
+                    returnUri = MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -279,12 +279,12 @@ public class MovieProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         MovieContract.PopularMovieEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-            case TOP_RATED_MOVIE_WITH_ID:
+            case HIGHEST_RATED_MOVIE_WITH_ID:
                 selection = MovieContract.MovieColumns._ID + " =? ";
                 selectionArgs = new String[]{Long.toString(ContentUris.parseId(uri))};
-            case TOP_RATED_MOVIE:
+            case HIGHEST_RATED_MOVIE:
                 rowsDeleted = db.delete(
-                        MovieContract.TopRatedMovieEntry.TABLE_NAME, selection, selectionArgs);
+                        MovieContract.HighestRatedMovieEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case FAVORITE_MOVIE_WITH_ID:
                 selection = MovieContract.MovieColumns._ID + " =? ";
@@ -343,11 +343,11 @@ public class MovieProvider extends ContentProvider {
                 rowsUpdated = db.update(MovieContract.PopularMovieEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
-            case TOP_RATED_MOVIE_WITH_ID:
+            case HIGHEST_RATED_MOVIE_WITH_ID:
                 selection = MovieContract.MovieColumns._ID + " =? ";
                 selectionArgs = new String[]{Long.toString(ContentUris.parseId(uri))};
-            case TOP_RATED_MOVIE:
-                rowsUpdated = db.update(MovieContract.TopRatedMovieEntry.TABLE_NAME, values, selection,
+            case HIGHEST_RATED_MOVIE:
+                rowsUpdated = db.update(MovieContract.HighestRatedMovieEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case FAVORITE_MOVIE_WITH_ID:

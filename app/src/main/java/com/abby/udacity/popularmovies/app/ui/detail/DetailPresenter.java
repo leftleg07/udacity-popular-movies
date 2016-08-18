@@ -10,7 +10,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.abby.udacity.popularmovies.app.data.db.MovieContract;
-import com.abby.udacity.popularmovies.app.data.model.Movie;
 import com.abby.udacity.popularmovies.app.data.model.Review;
 import com.abby.udacity.popularmovies.app.data.model.Video;
 import com.abby.udacity.popularmovies.app.data.network.TheMovieDBApiService;
@@ -21,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -37,26 +35,27 @@ public class DetailPresenter implements DetailContract.Presenter {
 
     private final String OWM_RESULTS = "results";
 
-    @Inject
-    DetailContract.View mView;
+    private final DetailContract.View mView;
 
-    @Inject
-    Context mContext;
+    private final Context mContext;
 
-    @Inject
-    TheMovieDBApiService mApiService;
+    private final TheMovieDBApiService mApiService;
 
     private ContentResolver mContentResolver;
 
 
     @Inject
-    public DetailPresenter() {
+    public DetailPresenter(Context context, DetailContract.View view, TheMovieDBApiService apiService) {
+        this.mContext = context;
+        this.mView = view;
+        this.mApiService = apiService;
+        mContentResolver = mContext.getContentResolver();
     }
 
     @Inject
     public void setUpPresenter() {
         mView.setPresenter(this);
-        mContentResolver = mContext.getContentResolver();
+
     }
 
 

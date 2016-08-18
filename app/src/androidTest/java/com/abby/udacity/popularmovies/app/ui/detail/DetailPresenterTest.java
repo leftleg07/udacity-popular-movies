@@ -12,7 +12,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.abby.udacity.popularmovies.app.MockApplication;
 import com.abby.udacity.popularmovies.app.data.db.MovieContract;
 import com.abby.udacity.popularmovies.app.di.MockModule;
-import com.abby.udacity.popularmovies.app.ui.popular.PopularPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +22,10 @@ import java.util.concurrent.CountDownLatch;
 import javax.inject.Inject;
 
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
 
 
 /**
- * Unit tests for the implementation of {@link PopularPresenter}
+ * Unit tests for the implementation of {@link DetailPresenter}
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest

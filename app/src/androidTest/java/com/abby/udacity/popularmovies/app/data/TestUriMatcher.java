@@ -23,8 +23,8 @@ public class TestUriMatcher {
 
     private static final Uri TEST_POPULAR_MOVIE_DIR = MovieContract.PopularMovieEntry.CONTENT_URI;
     private static final Uri TEST_POPULAR_MOVIE_ID_ITEM = MovieContract.PopularMovieEntry.buildPopularMovieUri(MOVIE_ID);
-    private static final Uri TEST_TOP_RELATED_MOVIE_DIR = MovieContract.TopRatedMovieEntry.CONTENT_URI;
-    private static final Uri TEST_TOP_RELATED_MOVIE_ID_ITEM = MovieContract.TopRatedMovieEntry.buildTopRelatedMovieUri(MOVIE_ID);
+    private static final Uri TEST_TOP_RELATED_MOVIE_DIR = MovieContract.HighestRatedMovieEntry.CONTENT_URI;
+    private static final Uri TEST_TOP_RELATED_MOVIE_ID_ITEM = MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(MOVIE_ID);
     private static final Uri TEST_FAVORITE_MOVIE_DIR = MovieContract.FavoriteMovieEntry.CONTENT_URI;
     private static final Uri TEST_FAVORITE_MOVIE_ID_ITEM = MovieContract.FavoriteMovieEntry.buildFavoriteMovieUri(MOVIE_ID);
     private static final Uri TEST_REVIEW_DIR = MovieContract.ReviewEntry.CONTENT_URI;
@@ -41,8 +41,8 @@ public class TestUriMatcher {
 
         assertEquals("Error: The POPULAR MOVIE URI was matched incorrectly.", testMatcher.match(TEST_POPULAR_MOVIE_DIR), MovieProvider.POPULAR_MOVIE);
         assertEquals("Error: The POPULAR MOVIE ID URI was matched incorrectly.", testMatcher.match(TEST_POPULAR_MOVIE_ID_ITEM), MovieProvider.POPULAR_MOVIE_WITH_ID);
-        assertEquals("Error: The TOP RELATED MOVIE URI was matched incorrectly.", testMatcher.match(TEST_TOP_RELATED_MOVIE_DIR), MovieProvider.TOP_RATED_MOVIE);
-        assertEquals("Error: The TOP RELATED MOVIE ID URI was matched incorrectly.", testMatcher.match(TEST_TOP_RELATED_MOVIE_ID_ITEM), MovieProvider.TOP_RATED_MOVIE_WITH_ID);
+        assertEquals("Error: The TOP RELATED MOVIE URI was matched incorrectly.", testMatcher.match(TEST_TOP_RELATED_MOVIE_DIR), MovieProvider.HIGHEST_RATED_MOVIE);
+        assertEquals("Error: The TOP RELATED MOVIE ID URI was matched incorrectly.", testMatcher.match(TEST_TOP_RELATED_MOVIE_ID_ITEM), MovieProvider.HIGHEST_RATED_MOVIE_WITH_ID);
         assertEquals("Error: The FAVORITE MOVIE URI was matched incorrectly.", testMatcher.match(TEST_FAVORITE_MOVIE_DIR), MovieProvider.FAVORITE_MOVIE);
         assertEquals("Error: The FAVORITE MOVIE ID URI was matched incorrectly.", testMatcher.match(TEST_FAVORITE_MOVIE_ID_ITEM), MovieProvider.FAVORITE_MOVIE_WITH_ID);
         assertEquals("Error: The REVIEW URI was matched incorrectly.", testMatcher.match(TEST_REVIEW_DIR), MovieProvider.REVIEW);

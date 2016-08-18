@@ -47,12 +47,12 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String TAG = PopularSyncAdapter.class.getSimpleName();
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ORDER_MODE_MOST_POPULAR, ORDER_MODE_TOP_RATED})
+    @IntDef({ORDER_MODE_MOST_POPULAR, ORDER_MODE_HIGHEST_RATED})
     public @interface OrderMode {
     }
 
     public static final int ORDER_MODE_MOST_POPULAR = 0;
-    public static final int ORDER_MODE_TOP_RATED = 1;
+    public static final int ORDER_MODE_HIGHEST_RATED = 1;
 
 
     // Interval at which to sync with the weather, in seconds.
@@ -62,7 +62,7 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int MOVIE_NOTIFICATION_ID = 3004;
 
-    private final String DEFAULT_ORDER_MOST_POPULAR = getContext().getString(R.string.pref_order_value_most_popular);
+    private final String DEFAULT_ORDER_MOST_POPULAR = getContext().getString(R.string.pref_mode_value_most_popular);
 
 
     /**
@@ -102,14 +102,14 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(TAG, "Beginning network synchronization");
 
-        String order = mPrefs.getString(getContext().getString(R.string.pref_order_key), DEFAULT_ORDER_MOST_POPULAR);
+        String order = mPrefs.getString(getContext().getString(R.string.pref_mode_key), DEFAULT_ORDER_MOST_POPULAR);
         int mode = -1;
         if (order.equals(DEFAULT_ORDER_MOST_POPULAR)) {
             mode = ORDER_MODE_MOST_POPULAR;
         } else {
-            mode = ORDER_MODE_TOP_RATED;
+            mode = ORDER_MODE_HIGHEST_RATED;
         }
-        Uri contentUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.CONTENT_URI : MovieContract.TopRatedMovieEntry.CONTENT_URI);
+        Uri contentUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.CONTENT_URI : MovieContract.HighestRatedMovieEntry.CONTENT_URI);
         Cursor cursor = mContentResolver.query(contentUri, MovieContract.MovieColumns.PROJECTION, null, null, null);
         Preconditions.checkNotNull(cursor);
         if (cursor.getCount() > 0) {
@@ -129,7 +129,7 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
             if (order.equals(DEFAULT_ORDER_MOST_POPULAR)) {
                 updateLocalPopularMovieData(jsonStr, syncResult, ORDER_MODE_MOST_POPULAR);
             } else {
-                updateLocalPopularMovieData(jsonStr, syncResult, ORDER_MODE_TOP_RATED);
+                updateLocalPopularMovieData(jsonStr, syncResult, ORDER_MODE_HIGHEST_RATED);
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing feed: " + e.toString());
@@ -159,7 +159,7 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
             entryMap.put(e.mId, e);
         }
 
-        Uri contentUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.CONTENT_URI : MovieContract.TopRatedMovieEntry.CONTENT_URI);
+        Uri contentUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.CONTENT_URI : MovieContract.HighestRatedMovieEntry.CONTENT_URI);
         Cursor cursor = mContentResolver.query(contentUri, MovieContract.MovieColumns.PROJECTION, null, null, null);
         Preconditions.checkNotNull(cursor);
 
@@ -178,7 +178,7 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
                 String overview = cursor.getString(MovieContract.MovieColumns.INDEX_COLUMN_OVERVIEW);
                 double voteAverage = cursor.getDouble(MovieContract.MovieColumns.INDEX_COLUMN_VOTE_AVERAGE);
                 double popularity = cursor.getDouble(MovieContract.MovieColumns.INDEX_COLUMN_POPULARITY);
-                Uri existingUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.buildPopularMovieUri(id) : MovieContract.TopRatedMovieEntry.buildTopRelatedMovieUri(id));
+                Uri existingUri = (mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.buildPopularMovieUri(id) : MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(id));
                 if ((match.mOriginalTitle != null && !match.mOriginalTitle.equals(originalTitle)) ||
                         (match.mPosterPath != null && !match.mPosterPath.equals(poserPath)) ||
                         (match.mOverview != null && !match.mOverview.equals(overview)) ||
@@ -201,7 +201,7 @@ public class PopularSyncAdapter extends AbstractThreadedSyncAdapter {
 
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.buildPopularMovieUri(id) : MovieContract.TopRatedMovieEntry.buildTopRelatedMovieUri(id);
+                Uri deleteUri = mode == ORDER_MODE_MOST_POPULAR ? MovieContract.PopularMovieEntry.buildPopularMovieUri(id) : MovieContract.HighestRatedMovieEntry.buildTopRelatedMovieUri(id);
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
                 syncResult.stats.numDeletes++;
