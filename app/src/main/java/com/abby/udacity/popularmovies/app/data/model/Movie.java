@@ -1,11 +1,14 @@
 package com.abby.udacity.popularmovies.app.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Immutable model class for a movie.
  */
-public class Movie  {
+public class Movie implements Parcelable {
     // id
     @SerializedName("id")
     public long mId;
@@ -33,5 +36,43 @@ public class Movie  {
     @SerializedName("release_date")
     public String mReleaseDate;
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public Movie(Parcel in) {
+        this.mId = in.readLong();
+        this.mOriginalTitle = in.readString();
+        this.mPosterPath = in.readString();
+        this.mOverview = in.readString();
+        this.mVoteAverage = in.readDouble();
+        this.mPopularity = in.readDouble();
+        this.mReleaseDate = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeString(mOriginalTitle);
+        dest.writeString(mPosterPath);
+        dest.writeString(mOverview);
+        dest.writeDouble(mVoteAverage);
+        dest.writeDouble(mPopularity);
+        dest.writeString(mReleaseDate);
+
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
 
